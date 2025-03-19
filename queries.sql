@@ -47,3 +47,5 @@ SELECT title, owner, price, createdAt FROM ad WHERE createdAt LIKE '20%%-09-01' 
 UPDATE ad SET price = 0 WHERE createdAt LIKE '20%%-09-01' ;
 
 SELECT AVG(price) FROM ad WHERE location = 'Paris' ;
+
+SELECT location, AVG(price) FROM ad GROUP BY location ;
