@@ -19,12 +19,8 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/ads/2
+DELETE http://localhost:3000/ads/27
 Content-Type: application/json
-
-{
-  "id": 2
-}
 
 ###
 
