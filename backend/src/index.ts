@@ -1,68 +1,94 @@
 import express from 'express'; 
+import sqlite3 from 'sqlite3';
 
+//Port and express app
 const port = 3000; 
 const app = express(); 
 
 app.use(express.json());
 
-let ads = [
-    {
-      id: 1,
-      title: "Bike to sell",
-      description:
-        "My bike is blue, working fine. I'm selling it because I've got a new one",
-      owner: "bike.seller@gmail.com",
-      price: 100,
-      picture:
-        "https://images.lecho.be/view?iid=dc:113129565&context=ONLINE&ratio=16/9&width=640&u=1508242455000",
-      location: "Paris",
-      createdAt: "2023-09-05T10:13:14.755Z",
-    },
-    {
-      id: 2,
-      title: "Car to sell",
-      description:
-        "My car is blue, working fine. I'm selling it because I've got a new one",
-      owner: "car.seller@gmail.com",
-      price: 10000,
-      picture:
-        "https://www.automobile-magazine.fr/asset/cms/34973/config/28294/apres-plusieurs-prototypes-la-bollore-bluecar-a-fini-par-devoiler-sa-version-definitive.jpg",
-      location: "Paris",
-      createdAt: "2023-10-05T10:14:15.922Z",
-    },
-  ];
+// SQLite DB and good_corner db init
+const db = new sqlite3.Database("good_corner.sqlite"); 
 
-app.get('/', (_req, res) => {
-    res.send("Hello World!  from express")
-})
-
-app.get('/ads', (_req, res) => {
-    res.send(ads)
-})
-
-app.post("/ads", (req, res) => {
-    ads.push(req.body);
-    console.log("A new add has been added !")
-    res.send("Request received, check the backend terminal");
-  });
-
-app.put("/ads/:id", (req, res) => {
-  ads = ads.map((ad) => {
-    if (parseInt(req.params.id) !== ad.id) {
-      return ad
-    } else {
-      console.log(req.body)
-      return req.body
-    }
+//Get ad from DB
+app.get('/ads', (req, res) => {
+  db.all("SELECT * FROM ad", (err, row) => {
+    res.send(row); 
   })
-  res.send(`Add ${req.params.id} has been updated !`)
 })
 
-app.delete("/ads/:id", (req, res) => {
-  ads = ads.filter((ad) => ad.id !== Number.parseInt(req.params.id));
-  res.send("The ad was deleted");
+// Post new ad in DB
+app.post("/ads", (req, res) => {
+  try {
+    const { title, description, owner, price, picture, location, createdAt } = req.body; 
+  
+    const stmt = db.prepare(
+    `INSERT INTO ad (
+    title, 
+    description, 
+    owner, 
+    price, 
+    picture, 
+    location, 
+    createdAt) 
+    
+    VALUES (?, ?, ?, ?, ?, ?, ?)`); 
+    
+    stmt.run([
+      title,
+      description,
+      owner,
+      price,
+      picture,
+      location,
+      createdAt
+    ]);
+  } catch (error) {
+    res.status(500); 
+  }
+  res.send("Ad has been posted !")
 });
 
+// Delete ad based on id
+app.delete("/ads/:id", (req, res) => {
+  const stmt = db.prepare("DELETE FROM AD WHERE ID=?");
+  stmt.run([req.params.id], (err) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.send("ad has been deleted");
+    }
+  });
+});
+
+// Edit ad based on id
+app.put("/ads/:id", (req, res) => {
+  console.log(req.params.id);
+  console.log(req.body);
+  const stmt = db.prepare(`UPDATE AD SET
+    TITLE=?,
+    DESCRIPTION=?,
+    OWNER=?,
+    PRICE=?,
+    CREATEDAT=?,
+    PICTURE=?,
+    LOCATION=?
+    WHERE ID=?
+  `);
+  stmt.run([
+    req.body.title,
+    req.body.description,
+    req.body.owner,
+    req.body.price,
+    req.body.createdAt,
+    req.body.picture,
+    req.body.location,
+    req.params.id,
+  ]);
+  res.send("ok");
+});
+
+// App listen
 app.listen(port, () => {
-    console.log(`This is an express app listening on port ${port}`)
+    console.log(`Express app is listening on port ${port} :D`)
 })

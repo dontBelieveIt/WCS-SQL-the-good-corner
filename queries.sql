@@ -36,16 +36,16 @@ INSERT INTO ad (title, description, owner, price, picture, location, createdAt) 
 ('Gaming Laptop', 'High-performance gaming laptop, top-of-the-line specs, great condition.', 'George Adams', 1500, 'laptop1.jpg', 'Lyon', '2025-03-19');
 
 
-SELECT * FROM ad ;
+-- SELECT * FROM ad ;
 
-SELECT title, owner, location FROM ad WHERE location = 'Bordeaux';
+-- SELECT title, owner, location FROM ad WHERE location = 'Bordeaux';
 
-SELECT title, owner, price, createdAt FROM ad WHERE price > 40 ; 
+-- SELECT title, owner, price, createdAt FROM ad WHERE price > 40 ; 
 
-SELECT title, owner, price, createdAt FROM ad WHERE createdAt LIKE '20%%-09-01' ;
+-- SELECT title, owner, price, createdAt FROM ad WHERE createdAt LIKE '20%%-09-01' ;
 
-UPDATE ad SET price = 0 WHERE createdAt LIKE '20%%-09-01' ;
+-- UPDATE ad SET price = 0 WHERE createdAt LIKE '20%%-09-01' ;
 
-SELECT AVG(price) FROM ad WHERE location = 'Paris' ;
+-- SELECT AVG(price) FROM ad WHERE location = 'Paris' ;
 
-SELECT location, AVG(price) FROM ad GROUP BY location ;
+-- SELECT location, AVG(price) FROM ad GROUP BY location ;
