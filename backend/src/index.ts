@@ -2,6 +2,7 @@ import "reflect-metadata";
 import express from 'express'; 
 import sqlite3 from 'sqlite3';
 import { dataSource } from "./config/db";
+import { Ads } from "./entities/Ads";
 
 //Port and express app
 const port = 3000; 
@@ -10,85 +11,49 @@ const app = express();
 app.use(express.json());
 
 // SQLite DB and good_corner db init
-const db = new sqlite3.Database("good_corner.sqlite"); 
+// const db = new sqlite3.Database("good_corner.sqlite"); 
 
 // Get ad from DB
-// app.get('/ads', (req, res) => {
-//   db.all("SELECT * FROM ad", (err, row) => {
-//     res.send(row); 
-//   })
-// })
+app.get('/ads', async (_req, res) => {
+  try {
+    const allAds = await Ads.find();
+    res.send(allAds); 
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
 
-// Post new ad in DB
-// app.post("/ads", (req, res) => {
-//   try {
-//     const { title, description, owner, price, picture, location, createdAt } = req.body; 
-  
-//     const stmt = db.prepare(
-//     `INSERT INTO ad (
-//     title, 
-//     description, 
-//     owner, 
-//     price, 
-//     picture, 
-//     location, 
-//     createdAt) 
-    
-//     VALUES (?, ?, ?, ?, ?, ?, ?)`); 
-    
-//     stmt.run([
-//       title,
-//       description,
-//       owner,
-//       price,
-//       picture,
-//       location,
-//       createdAt
-//     ]);
-//   } catch (error) {
-//     res.status(500); 
-//   }
-//   res.send("Ad has been posted !")
-// });
+// Post new add
+app.post("/ads", async (req, res) => {
+  const ad = new Ads(); 
+    ad.title = req.body.title; 
+    ad.description = req.body.description; 
+    ad.owner = req.body.owner; 
+    ad.price = req.body.price; 
+    ad.picture = req.body.picture; 
+    ad.location = req.body.location; 
+    ad.createdAt = req.body.createdAt; 
 
-// Delete ad based on id
-// app.delete("/ads/:id", (req, res) => {
-//   const stmt = db.prepare("DELETE FROM AD WHERE ID=?");
-//   stmt.run([req.params.id], (err) => {
-//     if (err) {
-//       res.status(500).send(err);
-//     } else {
-//       res.send("ad has been deleted");
-//     }
-//   });
-// });
+  await ad.save();
+  res.status(201).send("New ad has been created !");
+});
 
-// Edit ad based on id
-// app.put("/ads/:id", (req, res) => {
-//   console.log(req.params.id);
-//   console.log(req.body);
-//   const stmt = db.prepare(`UPDATE AD SET
-//     TITLE=?,
-//     DESCRIPTION=?,
-//     OWNER=?,
-//     PRICE=?,
-//     CREATEDAT=?,
-//     PICTURE=?,
-//     LOCATION=?
-//     WHERE ID=?
-//   `);
-//   stmt.run([
-//     req.body.title,
-//     req.body.description,
-//     req.body.owner,
-//     req.body.price,
-//     req.body.createdAt,
-//     req.body.picture,
-//     req.body.location,
-//     req.params.id,
-//   ]);
-//   res.send("ok");
-// });
+app.delete("/ads/:id", async (req, res) => {
+  await Ads.delete({id:Number.parseInt(req.params.id) });
+  res.status(200).send(`Ad number ${req.params.id} has been deleted! `)
+})
+
+app.put("/ads/:id", async (req, res) => {
+  try {
+    const body = req.body; 
+    const id = Number.parseInt(req.params.id); 
+
+    await Ads.update({id :id}, body)
+    res.status(200).send(`Ad number ${req.params.id} has been updated !`)
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
 
 // App listen
 app.listen(port, async () => {

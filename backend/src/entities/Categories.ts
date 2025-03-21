@@ -7,9 +7,9 @@ import {
   @Entity()
   export class Categories extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
   
     @Column({ length: 100 })
-    title: string;
+    title!: string;
   }
   

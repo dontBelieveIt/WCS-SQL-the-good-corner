@@ -7,31 +7,27 @@ import {
   @Entity()
   export class Ads extends BaseEntity {
     @PrimaryGeneratedColumn()
-    id: number;
+    id!: number;
   
     @Column({ length: 100 })
-    title: string;
+    title!: string;
   
     @Column()
-    description: string;
+    description!: string;
   
     @Column()
-    owner: string;
+    owner!: string;
   
     @Column()
-    price: number;
+    price!: number;
 
     @Column()
-    picture : string; 
+    picture!: string; 
 
     @Column()
-    location : string;
+    location!: string;
 
     @Column()
-    createAt : Date; 
-
-    @Column() 
-    category_id : string; 
-
+    createdAt!: number; 
   }
   
