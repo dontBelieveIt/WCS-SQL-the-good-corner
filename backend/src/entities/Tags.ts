@@ -1,8 +1,10 @@
 import { 
     BaseEntity, 
     Column, Entity, 
+    OneToMany, 
     PrimaryGeneratedColumn 
   } from "typeorm";
+  import { Ads } from "./Ads";
   
   @Entity()
   export class Tags extends BaseEntity {
@@ -11,5 +13,8 @@ import {
   
     @Column({ length: 100 })
     title!: string;
+
+    @OneToMany(() => Ads, ads => ads.id)
+    ads ! : Ads;
   }
   

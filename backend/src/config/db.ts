@@ -7,5 +7,6 @@ export const dataSource = new DataSource({
     type: "sqlite", 
     database : "good_corner.sqlite", 
     entities : [Ads, Categories, Tags],
-    synchronize : true 
+    synchronize : true,
+    logging: ["query", "error"] 
 })
