@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS tags ;
 DROP TABLE IF EXISTS ads;
 DROP TABLE IF EXISTS ad_tags ;
 
-PRAGMA foreign_keys = ON ; 
+-- PRAGMA foreign_keys = ON ; 
 
 
 CREATE TABLE categories 
@@ -27,6 +27,8 @@ CREATE TABLE ads (
         picture VARCHAR(100), 
         location VARCHAR(100), 
         createdAt DATE NOT NULL, 
+        category_id  NOT NULL, 
+        FOREIGN KEY (category_id) REFERENCES category(id)
     );
 
 
@@ -45,7 +47,7 @@ INSERT INTO categories (title) VALUES
     ('Hifi')
 ; 
 
-INSERT INTO ads(title, description, owner, price, picture, location, createdAt, category_id) VALUES
+INSERT INTO ads(title, description, owner, price, picture, location, createdAt) VALUES
     ('Vintage Wooden Chair', 'A beautiful vintage wooden chair in great condition.', 'John Doe', 120, 'chair1.jpg', 'Bordeaux', '2024-09-01'),
     ('Modern Sofa Set', 'A comfortable and modern sofa set, perfect for any living room.', 'Jane Smith', 899, 'sofa1.jpg', 'Paris', '2025-03-19'),
     ('Smartphone for Sale', 'A brand new smartphone with all accessories included.', 'Mike Johnson', 500, 'phone1.jpg', 'Lyon', '2025-03-19'),
@@ -75,12 +77,3 @@ INSERT INTO tags (title) VALUES
 ; 
 
 INSERT INTO ad_tags (ad_id) SELECT ads.id FROM ads ; 
-
--- INSERT INTO ad_tags (tag_id)
--- SELECT tags.id
--- FROM tags;
-
--- SELECT ads.id, tags.id, tags.title 
--- FROM ads
--- LEFT JOIN tags 
--- ON ads.title = tags.title ;

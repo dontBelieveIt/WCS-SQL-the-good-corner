@@ -12,12 +12,13 @@ Content-Type: application/json
     "price": 10000,
     "picture": "https://www.automobile-magazine.fr/asset/cms/34973/config/28294/apres-plusieurs-prototypes-la-bollore-bluecar-a-fini-par-devoiler-sa-version-definitive.jpg",
     "location": "Paris",
-    "createdAt": "2023-10-05"
+    "createdAt": "2023-10-05", 
+    "category_id" : 1
 }
 
 ###
 
-DELETE http://localhost:3000/ads/21
+DELETE http://localhost:3000/ads/27
 Content-Type: application/json
 
 ###
@@ -26,5 +27,5 @@ PUT http://localhost:3000/ads/4
 Content-Type: application/json
 
 {
-    "title": "THIS IS THE UPDATED TITLE"
+    "category": "Other"
 }

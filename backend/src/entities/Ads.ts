@@ -2,9 +2,7 @@ import {
     BaseEntity, 
     Column, Entity, 
     JoinColumn, 
-    JoinTable, 
     ManyToOne, 
-    OneToMany, 
     OneToOne, 
     PrimaryGeneratedColumn 
   } from "typeorm";
@@ -37,12 +35,13 @@ import { Tags } from "./Tags";
     @Column()
     createdAt!: number; 
     
-    @OneToOne(() => Categories, category => category.id)
-    @JoinColumn()
+    @ManyToOne(() => Categories, category => category.ads)
+    @JoinColumn({
+      name: "category_id",
+    })
     category! : Categories; 
 
     @ManyToOne(() => Tags, tag => tag.id)
-    @JoinTable()
+    @JoinColumn()
     tag! :Tags;
   }
-  

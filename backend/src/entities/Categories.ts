@@ -1,8 +1,7 @@
 import { 
     BaseEntity, 
     Column, Entity, 
-    ManyToOne, 
-    OneToOne, 
+    OneToMany, 
     PrimaryGeneratedColumn 
   } from "typeorm";
   import { Ads } from "./Ads";
@@ -12,10 +11,13 @@ import {
     @PrimaryGeneratedColumn()
     id!: number;
   
-    @Column({ length: 100 })
+    @Column({
+      nullable:false, 
+      default:"other"
+    })
     title!: string;
     
-  @OneToOne(() => Ads, ads => ads.id)
-  ads! : Ads; 
+  @OneToMany(() => Ads, ads => ads.category)
+  ads! : Ads[]; 
   }
   
