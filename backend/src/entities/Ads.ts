@@ -1,13 +1,12 @@
 import { 
     BaseEntity, 
     Column, Entity, 
-    JoinColumn, 
+    JoinTable, 
     ManyToOne, 
-    OneToOne, 
     PrimaryGeneratedColumn 
   } from "typeorm";
-import { Categories } from "./Categories";
-import { Tags } from "./Tags";
+import Categories from "./Categories";
+import Tags from "./Tags";
   
   @Entity()
   export class Ads extends BaseEntity {
@@ -36,12 +35,15 @@ import { Tags } from "./Tags";
     createdAt!: number; 
     
     @ManyToOne(() => Categories, category => category.ads)
-    @JoinColumn({
+    @JoinTable({
       name: "category_id",
     })
     category! : Categories; 
 
     @ManyToOne(() => Tags, tag => tag.id)
-    @JoinColumn()
-    tag! :Tags;
+    @JoinTable({
+      name: "tag_id"
+    })
+    tag! :Tags[];
   }
+export default Ads

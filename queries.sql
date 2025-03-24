@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS categories ;
 DROP TABLE IF EXISTS tags ; 
 DROP TABLE IF EXISTS ads;
-DROP TABLE IF EXISTS ad_tags ;
+-- DROP TABLE IF EXISTS ad_tags ;
 
 -- PRAGMA foreign_keys = ON ; 
 
@@ -12,11 +12,11 @@ CREATE TABLE categories
         title VARCHAR(100) NOT NULL
     );
 
-CREATE TABLE tags 
-    (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        title VARCHAR(100) NOT NULL
-    ); 
+-- CREATE TABLE tags 
+--     (
+--         id INTEGER PRIMARY KEY AUTOINCREMENT, 
+--         title VARCHAR(100) NOT NULL
+--     ); 
     
 CREATE TABLE ads (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,14 +32,14 @@ CREATE TABLE ads (
     );
 
 
-CREATE TABLE ad_tags 
-    (
-        ad_id INT NOT NULL, 
-        tag_id INT NOT NULL,
-        PRIMARY KEY (ad_id, tag_id), 
-        FOREIGN KEY (ad_id) REFERENCES ad(id), 
-        FOREIGN KEY (tag_id) REFERENCES tag(id)
-    );
+-- CREATE TABLE ad_tags 
+--     (
+--         ad_id INT NOT NULL, 
+--         tag_id INT NOT NULL,
+--         PRIMARY KEY (ad_id, tag_id), 
+--         FOREIGN KEY (ad_id) REFERENCES ad(id), 
+--         FOREIGN KEY (tag_id) REFERENCES tag(id)
+--     );
 
 INSERT INTO categories (title) VALUES 
     ('Other'),
@@ -71,9 +71,9 @@ INSERT INTO ads(title, description, owner, price, picture, location, createdAt) 
     ('Gaming Laptop', 'High-performance gaming laptop, top-of-the-line specs, great condition.', 'George Adams', 1500, 'laptop1.jpg', 'Lyon', '2025-03-19')
 ;
 
-INSERT INTO tags (title) VALUES 
-    ('new'), 
-    ('sold out')
-; 
+-- INSERT INTO tags (title) VALUES 
+--     ('new'), 
+--     ('sold out')
+-- ; 
 
-INSERT INTO ad_tags (ad_id) SELECT ads.id FROM ads ; 
+-- INSERT INTO ad_tags (ad_id) SELECT ads.id FROM ads ; 

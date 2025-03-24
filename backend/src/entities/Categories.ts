@@ -4,10 +4,10 @@ import {
     OneToMany, 
     PrimaryGeneratedColumn 
   } from "typeorm";
-  import { Ads } from "./Ads";
+  import Ads from "./Ads";
   
   @Entity()
-  export class Categories extends BaseEntity {
+  class Categories extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
   
@@ -21,3 +21,4 @@ import {
   ads! : Ads[]; 
   }
   
+  export default Categories

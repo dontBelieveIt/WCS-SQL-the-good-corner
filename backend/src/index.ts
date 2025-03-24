@@ -2,8 +2,9 @@ import "reflect-metadata";
 import express from 'express'; 
 import sqlite3 from 'sqlite3';
 import { dataSource } from "./config/db";
-import { Ads } from "./entities/Ads";
-import { Categories } from "./entities/Categories";
+import Ads from "./entities/Ads";
+import Categories from "./entities/Categories";
+import Tags from "./entities/Tags";
 
 //Port and express app
 const port = 3000; 
@@ -14,12 +15,14 @@ app.use(express.json());
 // SQLite DB and good_corner db init
 // const db = new sqlite3.Database("good_corner.sqlite"); 
 
+// ADS CRUD ! **********************************************************************************
 // Get ad from DB
 app.get('/ads', async (_req, res) => {
   try {
     const allAds = await Ads.find({
       relations: {
         category: true,
+        tag : true 
       },
     });
     res.send(allAds); 
@@ -30,7 +33,8 @@ app.get('/ads', async (_req, res) => {
 
 // Post new add
 app.post("/ads", async (req, res) => {
-  const ad = new Ads(); 
+  try {
+    const ad = new Ads(); 
     ad.title = req.body.title; 
     ad.description = req.body.description; 
     ad.owner = req.body.owner; 
@@ -40,26 +44,13 @@ app.post("/ads", async (req, res) => {
     ad.createdAt = req.body.createdAt; 
     ad.category = req.body.category_id; 
 
-  await ad.save();
-  res.status(201).send("New ad has been created !");
+    await ad.save();
+    res.status(201).send("New ad has been created !");
+  } catch (error) {
+    res.status(500).send(error)
+  }
+  
 });
-
-// app.get("/categories", async (_req, res) => {
-//   try {
-//     const allCategories = await Categories.find(); 
-//     res.send(allCategories);
-//   } catch (error) {
-//     res.status(500).send(error); 
-//   }
-// })
-
-// app.post("/categories", async (req, res) => {
-//   const category = new Categories(); 
-//   category.title = req.body.title; 
-
-//   await category.save(); 
-//   res.status(201).send(`Ad n°${req.body.id} has been categorized as ${req.body.title} !`)
-// })
 
 app.put("/ads/:id", async (req, res) => {
   try {
@@ -75,11 +66,17 @@ app.put("/ads/:id", async (req, res) => {
 })
 
 app.delete("/ads/:id", async (req, res) => {
-  await Ads.delete({id:Number.parseInt(req.params.id) });
-  res.status(200).send(`Ad number ${req.params.id} has been deleted! `)
+  try {
+    await Ads.delete({id:Number.parseInt(req.params.id) });
+    res.status(200).send(`Ad number ${req.params.id} has been deleted! `)
+  } catch (error) {
+    res.status(500).send(error); 
+  }
+ 
 })
 
-app.get("/categories", async (req, res) => {
+// CATEGORIES CRUD ! **********************************************************************************
+app.get("/categories", async (_req, res) => {
   try {
     const allCategories = await Categories.find(); 
     res.send(allCategories)
@@ -88,7 +85,29 @@ app.get("/categories", async (req, res) => {
   }
 })
 
-// App listen
+// TAGS CRUD ! ***************************************************************************************
+app.get("/tags", async (_req, res) => {
+  try {
+    const allTags = await Tags.find() ; 
+    res.status(201).send(allTags);
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
+app.post("/tags", async (req, res) => {
+  try {
+    const newTag = new Tags(); 
+    newTag.title = req.body.title; 
+    await newTag.save(); 
+    res.status(201).send(`The new tag "${req.body.title}" has been added !`)
+  } catch (error) {
+    res.status(500).send(error)
+  }
+  
+})
+
+// APP LISTEN ! **********************************************************************************
 app.listen(port, async () => {
   await dataSource.initialize(); 
 
