@@ -85,6 +85,28 @@ app.get("/categories", async (_req, res) => {
   }
 })
 
+app.post("/categories", async (req, res) => {
+  try {
+    const newCategory = new Categories(); 
+    String(req.body.title).charAt(0).toUpperCase() + String(req.body.title).slice(1);
+    newCategory.title = req.body.title; 
+    await newCategory.save(); 
+    res.status(201).send(`The new category "${req.body.title}" has been added !`); 
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
+app.delete("/categories/:id", async (req, res) => {
+  try {
+    await Categories.delete({id:Number.parseInt(req.params.id)}); 
+    res.status(201).send(`Categories with id ${req.params.id} has been deleted`); 
+  } catch (error) {
+    res.status(500).send(error)
+  }
+
+})
+
 // TAGS CRUD ! ***************************************************************************************
 app.get("/tags", async (_req, res) => {
   try {

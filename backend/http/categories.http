@@ -6,3 +6,20 @@ GET http://localhost:3000/categories
 POST http://localhost:3000/categories
 Content-Type: application/json
 
+{
+    "title" : "cactus"
+}
+
+###
+
+PUT http://localhost:3000/categories/4
+Content-Type: application/json 
+
+{ 
+    "title" : "Cactus"
+}
+
+###
+
+DELETE http://localhost:3000/categories/4
+Content-Type: application/json
