@@ -1,6 +1,6 @@
-import { useParams } from "react-router";
 import "../index.css"; 
 import AdCard, { AdCardProps } from "./AdCard";
+import { useState } from "react";
 
 const RecentAds = () => {
   const ads: AdCardProps[] = [
@@ -42,17 +42,36 @@ const RecentAds = () => {
     }
   ];
   console.log(ads); 
+
+  const [total, setTotal] = useState(0); 
+  const removePrice = (ad:AdCardProps) => {
+    if (total < ad.price) {
+      setTotal(0)
+    } else {
+      setTotal(total - ad.price)
+    }
+  }
+
     return( 
       <main className="main-content">
         <h2>Annonces récentes</h2>
+        <h3>Total in cart : {total} €</h3>
         <section className="recent-ads">
           {ads.map((ad, i) => 
-            <AdCard 
-            key={i+ad.title}
+          <div key={i+ad.title}>
+                 <AdCard 
             title={ad.title} 
             imgUrl={ad.imgUrl}
             price={ad.price}
             link={ad.link}/>
+            <button className="button" onClick={() => {
+              setTotal(total + ad.price)
+            }}>Add price to cart</button>
+            <button className="button" onClick={(e) => {
+              e.preventDefault(); 
+              removePrice(ad)}}>Remove price from cart</button>
+          </div>
+         
            )}
         </section>
       </main>
