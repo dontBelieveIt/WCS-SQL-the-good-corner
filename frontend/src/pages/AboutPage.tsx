@@ -1,4 +1,4 @@
-const About = () => {
+const AboutPage = () => {
     return(
         <>
         <main className="main-content">
@@ -7,4 +7,4 @@ const About = () => {
         </>
     )
 }
-export default About
+export default AboutPage;

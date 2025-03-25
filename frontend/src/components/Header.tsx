@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import "../index.css"; 
 
 export default function Header() {
@@ -5,8 +6,8 @@ export default function Header() {
       <header className="header">
         <div className="main-menu">
           <h1>
-            <a href="/" className="button logo link-button">
-                <span className="mobile-short-label">TGC</span><span className="desktop-long-label">THE GOOD CORNER</span></a>
+            <Link className="link-button" to="/"><button className="button logo link-button">
+                <span className="mobile-short-label">TGC</span><span className="desktop-long-label">THE GOOD CORNER</span></button></Link>
           </h1>
           <form className="text-field-with-button">
             <input className="text-field main-search-field" type="search" />
@@ -27,24 +28,24 @@ export default function Header() {
               </svg>
             </button>
           </form>
-          <a href="/post-ad" className="button link-button">
+          <Link to="*" className="button link-button">
           <span className="mobile-short-label">Publier</span>
-          <span className="desktop-long-label">Publier une annonce</span></a>
+          <span className="desktop-long-label">Publier une annonce</span></Link>
         </div>
         <nav className="categories-navigation">
-          <a href="" className="category-navigation-link">Ameublement</a> •
-          <a href="" className="category-navigation-link">Électroménager</a> •
-          <a href="" className="category-navigation-link">Photographie</a> •
-          <a href="" className="category-navigation-link">Informatique</a> •
-          <a href="" className="category-navigation-link">Téléphonie </a> •
-          <a href="" className="category-navigation-link">Vélos</a> •
-          <a href="" className="category-navigation-link">Véhicules</a> •
-          <a href="" className="category-navigation-link">Sport</a> •
-          <a href="" className="category-navigation-link">Habillement</a> •
-          <a href="" className="category-navigation-link">Bébé</a> •
-          <a href="" className="category-navigation-link">Outillage</a> •
-          <a href="" className="category-navigation-link">Services </a> •
-          <a href="" className="category-navigation-link">Vacances</a>
+          <Link to="*" className="link-button category-navigation-link">Ameublement</Link>
+          <Link to="*" className="link-button category-navigation-link">Électroménager</Link>
+          <Link to="*" className="link-button category-navigation-link">Photographie</Link>
+          <Link to="*" className="link-button category-navigation-link">Informatique</Link>
+          <Link to="*" className="link-button category-navigation-link">Téléphonie</Link>
+          <Link to="*" className="link-button category-navigation-link">Vélos</Link>
+          <Link to="*" className="link-button category-navigation-link">Véhicules</Link>
+          <Link to="*" className="link-button category-navigation-link">Sport</Link>
+          <Link to="*" className="link-button category-navigation-link">Habillement</Link>
+          <Link to="*" className="link-button category-navigation-link">Bébé</Link>
+          <Link to="*" className="link-button category-navigation-link">Outillage</Link>
+          <Link to="*" className="link-button category-navigation-link">Services</Link>
+          <Link to="*" className="link-button category-navigation-link">Vacances</Link>
         </nav>
       </header>
     )
