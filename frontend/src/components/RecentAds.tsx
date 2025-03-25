@@ -1,3 +1,4 @@
+import { useParams } from "react-router";
 import "../index.css"; 
 import AdCard, { AdCardProps } from "./AdCard";
 
@@ -40,7 +41,7 @@ const RecentAds = () => {
       link: "/ads/porte-magazine"
     }
   ];
-    console.log(ads); 
+  console.log(ads); 
     return( 
       <main className="main-content">
         <h2>Annonces récentes</h2>
@@ -57,5 +58,4 @@ const RecentAds = () => {
       </main>
     )
 }
-
-export default RecentAds
+export default RecentAds 
