@@ -1,7 +1,7 @@
 import "reflect-metadata"; 
 import express from 'express'; 
-import sqlite3 from 'sqlite3';
 import { dataSource } from "./config/db";
+import cors from 'cors'; 
 import Ads from "./entities/Ads";
 import Categories from "./entities/Categories";
 import Tags from "./entities/Tags";
@@ -10,6 +10,7 @@ import Tags from "./entities/Tags";
 const port = 3000; 
 const app = express(); 
 
+app.use(cors());
 app.use(express.json());
 
 // SQLite DB and good_corner db init

@@ -1,47 +1,58 @@
+import axios from "axios";
 import "../index.css"; 
 import AdCard, { AdCardProps } from "./AdCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const RecentAds = () => {
   const ads: AdCardProps[] = [
     {
       title: "Table",
-      imgUrl: "/images/table.webp",
+      picture: "/images/table.webp",
       price: 120,
       link: "/ads/table"
     },
     {
       title: "Dame-jeanne",
-      imgUrl: "/images/dame-jeanne.webp",
+      picture: "/images/dame-jeanne.webp",
       price: 75,
       link: "/ads/dame-jeanne"
     },
     {
       title: "Vide-poche",
-      imgUrl: "/images/vide-poche.webp",
+      picture: "/images/vide-poche.webp",
       price: 4,
       link: "/ads/vide-poche"
     },
     {
       title: "Vaisselier",
-      imgUrl: "/images/vaisselier.webp",
+      picture: "/images/vaisselier.webp",
       price: 900,
       link: "/ads/vaisselier"
     },
     {
       title: "Bougie",
-      imgUrl: "/images/bougie.webp",
+      picture: "/images/bougie.webp",
       price: 8,
       link: "/ads/bougie"
     },
     {
       title: "Porte-magazine",
-      imgUrl: "/images/porte-magazine.webp",
+      picture: "/images/porte-magazine.webp",
       price: 45,
       link: "/ads/porte-magazine"
     }
   ];
-  console.log(ads); 
+  useEffect(() => {
+    const fetchData = async () => { 
+      try {
+        const result = await axios.get("http://localhost:3000/ads"); 
+        console.log(result.data)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData();
+  }, [])
 
   const [total, setTotal] = useState(0); 
   const removePrice = (ad:AdCardProps) => {
@@ -51,30 +62,40 @@ const RecentAds = () => {
       setTotal(total - ad.price)
     }
   }
-
-    return( 
-      <main className="main-content">
-        <h2>Annonces récentes</h2>
-        <h3>Total in cart : {total} €</h3>
-        <section className="recent-ads">
-          {ads.map((ad, i) => 
-          <div key={i+ad.title}>
-                 <AdCard 
+return( 
+  <main className="main-content">
+    <h2>Annonces récentes</h2>
+    <h3>Total in cart : {total} €</h3>
+    <section className="recent-ads">
+      {ads.map((ad, i) => 
+        <div key={i+ad.title}>
+          <AdCard 
             title={ad.title} 
-            imgUrl={ad.imgUrl}
+            picture={ad.picture}
             price={ad.price}
-            link={ad.link}/>
-            <button className="button" onClick={() => {
+            link={ad.link} 
+          />
+        <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+          <button 
+            className="button button-primary" 
+            onClick={() => {
               setTotal(total + ad.price)
-            }}>Add price to cart</button>
-            <button className="button" onClick={(e) => {
-              e.preventDefault(); 
-              removePrice(ad)}}>Remove price from cart</button>
-          </div>
-         
-           )}
-        </section>
-      </main>
-    )
+            }}>
+          Add to cart
+          </button>
+          <button 
+          className="button" 
+          onClick={(e) => {
+            e.preventDefault(); 
+            removePrice(ad)
+          }}>
+            Remove from cart
+          </button>
+        </div>
+      </div>
+      )}
+    </section>
+  </main>
+)
 }
 export default RecentAds 
