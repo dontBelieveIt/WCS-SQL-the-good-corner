@@ -5,6 +5,7 @@ import Layout from './pages/Layout';
 import About from './pages/AboutPage';
 import AdDetails from './pages/AdDetailsPage';
 import NoPageFound from './pages/NoPageFound';
+import PublishNewAdd from './pages/PublishNewAdd';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route index element={<RecentAds/>} />
         <Route path="about" element={<About />} />
         <Route path="ads/:id" element={<AdDetails />} />
+        <Route path="ads/new" element={<PublishNewAdd />} />
         <Route path="*" element={<NoPageFound />} />
       </Route>
     </Routes>   

@@ -28,7 +28,7 @@ export default function Header() {
               </svg>
             </button>
           </form>
-          <Link to="*" className="button link-button">
+          <Link to="ads/new" className="button link-button">
           <span className="mobile-short-label">Publier</span>
           <span className="desktop-long-label">Publier une annonce</span></Link>
         </div>

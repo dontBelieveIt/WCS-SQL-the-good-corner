@@ -32,7 +32,7 @@ return(
     <h3>Total in cart : {total} €</h3>
     <section className="recent-ads">
       {ads.map((ad, i) => 
-        <div key={i+ad.title}>
+        <div key={ad.title+i}>
           <AdCard 
             title={ad.title} 
             picture={ad.picture}
