@@ -1,7 +1,22 @@
 import { Link } from "react-router";
 import "../index.css"; 
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Categories } from "../types/Categories";
+
+const endPoint = "http://localhost:3000";
 
 export default function Header() {
+  const [categories, setCategories] = useState<Categories[]>([]); 
+  useEffect(()=>{
+          const fetchCategories = async () => {
+          const result = await axios.get<Categories[]>(`${endPoint}/categories`); 
+          setCategories(result.data)
+          }
+        fetchCategories(); 
+  },[])
+  console.log(categories);
+
     return( 
       <header className="header">
         <div className="main-menu">
@@ -33,19 +48,12 @@ export default function Header() {
           <span className="desktop-long-label">Publier une annonce</span></Link>
         </div>
         <nav className="categories-navigation">
-          <Link to="*" className="link-button category-navigation-link">Ameublement</Link>
-          <Link to="*" className="link-button category-navigation-link">Électroménager</Link>
-          <Link to="*" className="link-button category-navigation-link">Photographie</Link>
-          <Link to="*" className="link-button category-navigation-link">Informatique</Link>
-          <Link to="*" className="link-button category-navigation-link">Téléphonie</Link>
-          <Link to="*" className="link-button category-navigation-link">Vélos</Link>
-          <Link to="*" className="link-button category-navigation-link">Véhicules</Link>
-          <Link to="*" className="link-button category-navigation-link">Sport</Link>
-          <Link to="*" className="link-button category-navigation-link">Habillement</Link>
-          <Link to="*" className="link-button category-navigation-link">Bébé</Link>
-          <Link to="*" className="link-button category-navigation-link">Outillage</Link>
-          <Link to="*" className="link-button category-navigation-link">Services</Link>
-          <Link to="*" className="link-button category-navigation-link">Vacances</Link>
+          {categories.map(item => 
+            <Link 
+            to={`/?category=${item.id}`}
+            className="link-button category-navigation-link" 
+            key={item.id}>{item.title}</Link>
+          )}
         </nav>
       </header>
     )

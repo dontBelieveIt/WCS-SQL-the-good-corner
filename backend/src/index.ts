@@ -5,6 +5,7 @@ import cors from 'cors';
 import Ads from "./entities/Ads";
 import Categories from "./entities/Categories";
 import Tags from "./entities/Tags";
+import { FindManyOptions } from "typeorm";
 
 //Port and express app
 const port = 3000; 
@@ -18,14 +19,24 @@ app.use(express.json());
 
 // ADS CRUD ! **********************************************************************************
 // Get ad from DB
-app.get('/ads', async (_req, res) => {
+app.get('/ads', async (req, res) => {
+  console.log("This is the req.query " + req.query); 
   try {
-    const allAds = await Ads.find({
-      relations: {
-        category: true,
-        tag : true 
-      },
-    });
+    let findOptions: FindManyOptions<Ads> = {
+        relations: { 
+          category : true, 
+          tag: true,
+        }, 
+    }
+    if (req.query.category !== undefined) {
+      findOptions = {
+        ...findOptions, 
+        where : {
+          category: {id:Number.parseInt(req.query.category as string)}, 
+        },
+      };
+    }
+    const allAds = await Ads.find(findOptions);
     res.send(allAds); 
   } catch (error) {
     res.status(500).send(error)

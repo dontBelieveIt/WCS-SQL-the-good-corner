@@ -18,14 +18,16 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/ads/27
+DELETE http://localhost:3000/ads/3
 Content-Type: application/json
 
 ###
 
-PUT http://localhost:3000/ads/4
+PUT http://localhost:3000/ads/1
 Content-Type: application/json
 
 {
-    "category": "Other"
+    "category": {
+        "id": 14
+    }
 }
