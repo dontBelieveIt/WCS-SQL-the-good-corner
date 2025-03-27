@@ -3,8 +3,8 @@ import "../index.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Categories } from "../types/Categories";
+import { endPoint } from "../endPoint";
 
-const endPoint = "http://localhost:3000";
 
 export default function Header() {
   const [categories, setCategories] = useState<Categories[]>([]); 
@@ -15,7 +15,6 @@ export default function Header() {
           }
         fetchCategories(); 
   },[])
-  console.log(categories);
 
     return( 
       <header className="header">

@@ -2,24 +2,13 @@ import axios from "axios";
 import "../index.css"; 
 import AdCard, { AdCardProps } from "./AdCard";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
+import { endPoint } from "../endPoint";
 
-const endPoint = "http://localhost:3000" ; 
 
 const RecentAds = () => {
-  // useEffect(() => {
-  //   const fetchData = async () => { 
-  //     try {
-  //       const result = await axios.get<AdCardProps[]>(`${endPoint}/ads`); 
-  //       setAds(result.data)
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  //   fetchData();
-  // }, [])
 
-  const [ads, setAds] = useState<AdCardProps[]>([]);
+  const [ads, setAds] = useState<adsTypes[]>([]);
   const [searchParams] = useSearchParams();
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +17,6 @@ const RecentAds = () => {
         url += `/?category=${searchParams.get("category")}`;
       }
       const result = await axios.get(url);
-      console.log(url)
       setAds(result.data);
     }
     fetchData();
@@ -48,12 +36,11 @@ return(
     <h3>Total in cart : {total} €</h3>
     <section className="recent-ads">
       {ads.map((ad, i) => 
-        <div key={ad.title+i}>
+        <Link to={`/ads/${ad.id}`} key={ad.title+i} className="ad-card-link">
           <AdCard 
             title={ad.title} 
             picture={ad.picture}
             price={ad.price}
-            link={`/ads/${ad.id}`} 
           />
         <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
           <button 
@@ -72,7 +59,7 @@ return(
             Remove from cart
           </button>
         </div>
-      </div>
+      </Link>
       )}
     </section>
   </main>

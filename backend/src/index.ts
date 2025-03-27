@@ -18,9 +18,8 @@ app.use(express.json());
 // const db = new sqlite3.Database("good_corner.sqlite"); 
 
 // ADS CRUD ! **********************************************************************************
-// Get ad from DB
+// Get all ads from DB
 app.get('/ads', async (req, res) => {
-  console.log("This is the req.query " + req.query); 
   try {
     let findOptions: FindManyOptions<Ads> = {
         relations: { 
@@ -43,6 +42,15 @@ app.get('/ads', async (req, res) => {
   }
 })
 
+//get a particular ads from DB 
+
+app.get("/ads/:id", async (req, res) => {
+  const result = await Ads.findOneByOrFail({
+    id: Number.parseInt(req.params.id),
+  });
+  res.send(result);
+});
+
 // Post new add
 app.post("/ads", async (req, res) => {
   try {
@@ -55,6 +63,7 @@ app.post("/ads", async (req, res) => {
     ad.location = req.body.location; 
     ad.createdAt = req.body.createdAt; 
     ad.category = req.body.category_id; 
+    ad.tag = req.body.tags.map((item:string) => {id : Number.parseInt(item)})
 
     await ad.save();
     res.status(201).send("New ad has been created !");
@@ -151,6 +160,28 @@ app.post("/tags", async (req, res) => {
     res.status(500).send(error)
   }
   
+})
+
+app.put("/tags/:id", async (req, res) => {
+  try {
+    const newTitle = req.body.title; 
+    const id = Number.parseInt(req.params.id); 
+
+    await Tags.update({id :id}, newTitle); 
+    res.status(201).send(`Tags ${req.body.title} has been updated !`)
+  } catch (error) {
+    res.status(500).send(error); 
+  }
+})
+
+app.delete("/tags/:id", async (req, res) => {
+  try {
+    await Tags.delete({id:Number.parseInt(req.params.id)}); 
+    res.status(201).send(`Tags with id ${req.params.id} has been deleted`); 
+  } catch (error) {
+    res.status(500).send(error)
+  }
+
 })
 
 // APP LISTEN ! **********************************************************************************

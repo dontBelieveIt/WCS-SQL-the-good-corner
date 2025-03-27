@@ -8,3 +8,17 @@ Content-Type:  application/json
 {
     "title": "vintage"
 }
+
+###
+
+PUT http://localhost:3000/tags/3
+Content-Type: application/json
+
+{
+    "title": "New title"
+}
+
+###
+
+DELETE http://localhost:3000/tags/2
+Content-Type: application/json

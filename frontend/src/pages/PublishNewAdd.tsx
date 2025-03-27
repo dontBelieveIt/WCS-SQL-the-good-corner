@@ -3,25 +3,34 @@ import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Categories } from "../types/Categories";
 import { adsTypes } from "../types/adsTypes";
+import { Link } from "react-router";
+import { Tags } from "../types/Tags";
+import { toast } from "react-toastify";
 
 const endPoint = "http://localhost:3000"; 
 
 const PublishNewAdd = () => {
     // To show the different categories and fetch them from the BD
-    const [categories, setCategories] = useState<Categories[]>([]); 
+    const [categories, setCategories] = useState<Categories[]>([]);     
+    const [tags, setTags] = useState<Tags[]>([]); 
     useEffect(()=>{
         try {
-            const fetchCategories = async () => {
-            const result = await axios.get<Categories[]>(`${endPoint}/categories`); 
-            setCategories(result.data)
-        }
-        fetchCategories(); 
+            const fetchCategoriesAndTags = async () => {
+                // fetch categories from DB
+                    const CategorieResult = await axios.get<Categories[]>(`${endPoint}/categories`); 
+                    setCategories(CategorieResult.data); 
+                // fetch tags from DB
+                    const TagsResult = await axios.get<Tags[]>(`${endPoint}/tags`); 
+                    setTags(TagsResult.data); 
+            }
+
+        fetchCategoriesAndTags(); 
         } catch (error) {
             console.error(error); 
         }
         
-    },[])
 
+    },[])
     const {
         register,
         handleSubmit,
@@ -29,7 +38,17 @@ const PublishNewAdd = () => {
         // formState: { errors },
       } = useForm<adsTypes>()
 
-    const onSubmit: SubmitHandler<adsTypes> = async (data) => await axios.post(`${endPoint}/ads`, data); 
+    const onSubmit: SubmitHandler<adsTypes> = async (data) => {
+        try {
+            // await axios.post(`${endPoint}/ads`, data)
+            console.log(data)
+            // toast.success("New add created !")
+        } catch (error) {
+            console.error(error); 
+            toast.error("Oups, an error occured.");
+        }
+
+    } ; 
 
     const img = "https://cdn.pixabay.com/photo/2016/03/05/19/51/easter-1238537_1280.jpg"; 
 
@@ -65,8 +84,19 @@ const PublishNewAdd = () => {
                     <option value={item.id} key={item.id}>{item.title}</option>
                 )}
             </select>
+            <fieldset>
+                <legend>Tags</legend>
+                {tags.map((tag)=> 
+                <div key={tag.id}>
+                <input value={tag.id} type="checkbox" {...register("tags")}/>
+                <label htmlFor={tag.title}>{tag.title}</label>
+                </div>
+                )}
+                
+                </fieldset>
         <button className="button">Submit</button>
             </form>
+            <Link to="categories-and-tags">Or, you can add a new category or new tags</Link>
             </div>
         </main>
     )

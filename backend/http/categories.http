@@ -7,12 +7,12 @@ POST http://localhost:3000/categories
 Content-Type: application/json
 
 {
-    "title" : "Holidays"
+    "title" : "NewCategory"
 }
 
 ###
 
-PUT http://localhost:3000/categories/6
+PUT http://localhost:3000/categories/2
 Content-Type: application/json 
 
 { 
@@ -21,5 +21,5 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/categories/3
+DELETE http://localhost:3000/categories/24
 Content-Type: application/json

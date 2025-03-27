@@ -7,4 +7,5 @@ export type adsTypes = {
     location : string; 
     createdAt : Date;
     category_id : number; 
+    tags : number[];
   }
