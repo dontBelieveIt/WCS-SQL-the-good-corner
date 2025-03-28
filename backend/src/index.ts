@@ -63,8 +63,11 @@ app.post("/ads", async (req, res) => {
     ad.location = req.body.location; 
     ad.createdAt = req.body.createdAt; 
     ad.category = req.body.category_id; 
-    ad.tag = req.body.tags.map((item:string) => {id : Number.parseInt(item)})
-
+    // console.log(req.body.tag)
+    // if (req.body.tag) {
+    //   ad.tag = req.body.tag.map((item:string) => ({id : Number.parseInt(item)}))
+    // }
+    
     await ad.save();
     res.status(201).send("New ad has been created !");
   } catch (error) {
@@ -154,6 +157,7 @@ app.post("/tags", async (req, res) => {
   try {
     const newTag = new Tags(); 
     newTag.title = req.body.title; 
+    console.log(newTag.title + req.body.title)
     await newTag.save(); 
     res.status(201).send(`The new tag "${req.body.title}" has been added !`)
   } catch (error) {
@@ -162,17 +166,18 @@ app.post("/tags", async (req, res) => {
   
 })
 
-app.put("/tags/:id", async (req, res) => {
-  try {
-    const newTitle = req.body.title; 
-    const id = Number.parseInt(req.params.id); 
+// app.put("/tags/:id", async (req, res) => {
+//   try {
+//     const id = Number.parseInt(req.params.id);
+//     const newTitle = req.body.title; 
+//     console.log(newTitle, req.body.title, id) 
 
-    await Tags.update({id :id}, newTitle); 
-    res.status(201).send(`Tags ${req.body.title} has been updated !`)
-  } catch (error) {
-    res.status(500).send(error); 
-  }
-})
+//     await Tags.update({id:id}, newTitle); 
+//     res.status(201).send(`Tags ${req.body.title} has been updated !`)
+//   } catch (error) {
+//     res.status(500).send(error); 
+//   }
+// })
 
 app.delete("/tags/:id", async (req, res) => {
   try {

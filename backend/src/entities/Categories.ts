@@ -1,7 +1,7 @@
 import { 
     BaseEntity, 
     Column, Entity, 
-    OneToMany, 
+    ManyToMany, 
     PrimaryGeneratedColumn 
   } from "typeorm";
   import Ads from "./Ads";
@@ -17,7 +17,7 @@ import {
     })
     title!: string;
     
-  @OneToMany(() => Ads, ads => ads.category)
+  @ManyToMany(() => Ads, ads => ads.category)
   ads! : Ads[]; 
   }
   

@@ -6,12 +6,12 @@ POST http://localhost:3000/tags
 Content-Type:  application/json 
 
 {
-    "title": "vintage"
+    "title": "sold out"
 }
 
 ###
 
-PUT http://localhost:3000/tags/3
+PUT http://localhost:3000/tags/4
 Content-Type: application/json
 
 {

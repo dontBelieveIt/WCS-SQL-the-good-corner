@@ -7,6 +7,7 @@ import AdDetails from './pages/AdDetailsPage';
 import NoPageFound from './pages/NoPageFound';
 import PublishNewAdd from './pages/PublishNewAdd';
 import PublishNewTagsCategories from './pages/PublishNewTagsCategories';
+import SearchPage from './pages/SearchPage';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="ads/:id" element={<AdDetails />} />
         <Route path="ads/new" element={<PublishNewAdd />} />
         <Route path="ads/new/categories-and-tags" element={<PublishNewTagsCategories />} />
+        <Route path="/search/:keyword" element={<SearchPage />} />
         <Route path="*" element={<NoPageFound />} />
       </Route>
     </Routes>   

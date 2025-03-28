@@ -15,6 +15,6 @@ import {
     title!: string;
 
     @ManyToMany(() => Ads)
-    ads ! : Ads[];
+    ads! : Ads[];
   }
   export default Tags

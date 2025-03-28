@@ -2,6 +2,7 @@ import {
     BaseEntity, 
     Column, Entity, 
     JoinTable, 
+    ManyToMany, 
     ManyToOne, 
     PrimaryGeneratedColumn 
   } from "typeorm";
@@ -40,9 +41,11 @@ import Tags from "./Tags";
     })
     category! : Categories; 
 
-    @ManyToOne(() => Tags, tag => tag.id)
+    @ManyToMany(() => Tags, tag => tag.ads)
     @JoinTable({
-      name: "tag_id"
+      name: "ads_tags",
+        joinColumns: [{ name: "ad_id" }],
+        inverseJoinColumns: [{ name: "tag_id" }]
     })
     tag! :Tags[];
   }

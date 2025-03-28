@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import "../index.css"; 
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -8,6 +8,8 @@ import { endPoint } from "../endPoint";
 
 export default function Header() {
   const [categories, setCategories] = useState<Categories[]>([]); 
+  const navigate = useNavigate();
+
   useEffect(()=>{
           const fetchCategories = async () => {
           const result = await axios.get<Categories[]>(`${endPoint}/categories`); 
@@ -23,7 +25,15 @@ export default function Header() {
             <Link className="link-button" to="/"><button className="button logo link-button">
                 <span className="mobile-short-label">TGC</span><span className="desktop-long-label">THE GOOD CORNER</span></button></Link>
           </h1>
-          <form className="text-field-with-button">
+          <form className="text-field-with-button"
+           onSubmit={(e) => {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form as HTMLFormElement);
+
+            // Or you can work with it as a plain object:
+            const formJson = Object.fromEntries(formData.entries());
+            navigate(`/search/${formJson.keyword}`)}}>
             <input className="text-field main-search-field" type="search" />
             <button className="button button-primary">
               <svg

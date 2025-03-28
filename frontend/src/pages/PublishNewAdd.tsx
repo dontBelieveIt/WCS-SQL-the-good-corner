@@ -40,9 +40,9 @@ const PublishNewAdd = () => {
 
     const onSubmit: SubmitHandler<adsTypes> = async (data) => {
         try {
-            // await axios.post(`${endPoint}/ads`, data)
+            await axios.post(`${endPoint}/ads`, data)
             console.log(data)
-            // toast.success("New add created !")
+            toast.success("New add created !")
         } catch (error) {
             console.error(error); 
             toast.error("Oups, an error occured.");

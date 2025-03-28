@@ -1,9 +1,10 @@
-import { useParams } from "react-router"; 
+import { redirect, useParams } from "react-router"; 
 import { endPoint } from "../endPoint";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
 import NoPageFound from "./NoPageFound";
+import { toast } from "react-toastify";
 
 type thisAdTypes = {
   id : number; 
@@ -31,7 +32,28 @@ const AdDetailsPage = () => {
   }
     fetchData();
   }, [id])
-  // const ad = thisAd.find((ad)=> ad.id === id);
+
+  const deleteThisAdd = () => { 
+    try {
+      const deleteThis = async () => {
+      const result = await axios.delete(`${endPoint}/ads/${id}`)
+      return result;
+      }
+    deleteThis();
+    toast.success("Add was successfully deleted !"); 
+    new Response("", {
+      status: 201,
+      headers: {
+        Location: "/",
+      },
+    });
+    } catch (error) {
+      toast.error("An error occured."); 
+      console.error(error);
+    }
+  
+  }
+
   if (!thisAd) {
     return (
       <NoPageFound />
@@ -70,6 +92,9 @@ const AdDetailsPage = () => {
               ></path>
             </svg>
             Envoyer un email</a>
+        </div>
+        <div>
+          <button className="button" onClick={deleteThisAdd}>Delete add</button>
         </div>
       </section>
         </main>
