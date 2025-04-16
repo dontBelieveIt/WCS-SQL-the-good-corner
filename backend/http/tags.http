@@ -6,7 +6,7 @@ POST http://localhost:3000/tags
 Content-Type:  application/json 
 
 {
-    "title": "new"
+    "title": "the fourth one"
 }
 
 ###
@@ -15,7 +15,7 @@ PUT http://localhost:3000/tags/4
 Content-Type: application/json
 
 {
-    "title": "New title"
+    "title": "modified title"
 }
 
 ###

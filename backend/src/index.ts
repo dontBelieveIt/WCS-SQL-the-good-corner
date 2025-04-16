@@ -122,17 +122,17 @@ app.post("/categories", async (req, res) => {
   }
 })
 
-app.put("/categories/:id", async (req, res) => {
-  try {
-    const newTitle = req.body.title; 
-    const id = Number.parseInt(req.params.id); 
+// app.put("/categories/:id", async (req, res) => {
+//   try {
+//     const newTitle = req.body.title; 
+//     const id = Number.parseInt(req.params.id); 
 
-    await Category.update({id :id}, newTitle); 
-    res.status(201).send(`Category ${req.body.title} has been updated !`)
-  } catch (error) {
-    res.status(500).send(error); 
-  }
-})
+//     await Category.update({id :id}, newTitle); 
+//     res.status(201).send(`Category ${req.body.title} has been updated !`)
+//   } catch (error) {
+//     res.status(500).send(error); 
+//   }
+// })
 
 app.delete("/categories/:id", async (req, res) => {
   try {
