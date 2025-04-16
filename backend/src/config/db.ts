@@ -1,12 +1,14 @@
 import { DataSource } from "typeorm";
-import Ads from "../entities/Ads"; 
-import Categories from "../entities/Categories";
-import Tags from "../entities/Tags";
+import Tag from "../entities/Tag";
+import Ad from "../entities/Ad";
+import Category from "../entities/Category";
 
-export const dataSource = new DataSource({
+const dataSource = new DataSource({
     type: "sqlite", 
     database : "good_corner.sqlite", 
-    entities : [Ads, Categories, Tags],
-    synchronize : true,
-    logging: ["query", "error"] 
+    entities : [ Ad, Category, Tag], 
+    synchronize : true, 
+    logging : ["query", "error"]
 })
+
+export default dataSource

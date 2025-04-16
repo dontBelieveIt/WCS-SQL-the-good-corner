@@ -18,7 +18,7 @@ const App = () => {
         <Route path="ads/:id" element={<AdDetails />} />
         <Route path="ads/new" element={<PublishNewAdd />} />
         <Route path="ads/new/categories-and-tags" element={<PublishNewTagsCategories />} />
-        <Route path="/search/:keyword" element={<SearchPage />} />
+        <Route path="ads/search/:keyword" element={<SearchPage />} />
         <Route path="*" element={<NoPageFound />} />
       </Route>
     </Routes>   

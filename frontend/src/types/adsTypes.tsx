@@ -1,4 +1,5 @@
 export type adsTypes = {
+  id: number;
     title : string; 
     description : string ; 
     owner : string; 
@@ -7,5 +8,5 @@ export type adsTypes = {
     location : string; 
     createdAt : Date;
     category_id : number; 
-    tag_id : number[];
+    // tag_id : number[];
   }

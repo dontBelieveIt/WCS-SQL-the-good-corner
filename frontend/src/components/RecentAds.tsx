@@ -4,6 +4,7 @@ import AdCard, { AdCardProps } from "./AdCard";
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router";
 import { endPoint } from "../endPoint";
+import { adsTypes } from "../types/adsTypes";
 
 
 const RecentAds = () => {

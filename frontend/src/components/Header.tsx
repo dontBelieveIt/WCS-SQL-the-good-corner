@@ -33,8 +33,8 @@ export default function Header() {
 
             // Or you can work with it as a plain object:
             const formJson = Object.fromEntries(formData.entries());
-            navigate(`/search/${formJson.keyword}`)}}>
-            <input className="text-field main-search-field" type="search" />
+            navigate(`ads/search/${formJson.keyword}`)}}>
+            <input className="text-field main-search-field" type="search" name="keyword" />
             <button className="button button-primary">
               <svg
                 aria-hidden="true"

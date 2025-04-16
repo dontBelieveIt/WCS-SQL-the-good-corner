@@ -14,12 +14,12 @@ Content-Type: application/json
     "location": "Paris",
     "createdAt": "2023-10-05", 
     "category" : 2, 
-    "tag" : [{"id":1}, {"id":2}]
+    "tags" : [{"id":1}, {"id":2}]
 }
 
 ###
 
-DELETE http://localhost:3000/ads/5
+DELETE http://localhost:3000/ads/1
 Content-Type: application/json
 
 ###
@@ -29,7 +29,7 @@ Content-Type: application/json
 
 {
     "tag": [{
-        "id": 3, 
-        "id": 4
+        "id": 2, 
+        "id": 3
     }]
 }

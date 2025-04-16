@@ -1,8 +1,8 @@
-import { Link } from "react-router";
 import "../index.css"; 
 
 export type AdCardProps = {
-    title:string; 
+    id?:number;
+    title: string; 
     picture: string; 
     price: number; 
 }
