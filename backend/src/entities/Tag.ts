@@ -20,6 +20,7 @@ class Tag extends BaseEntity {
   title!: string;
 
   @ManyToMany(() => Ad)
+  @Field(() => [Ad])
   ads!: Ad[];
 }
 

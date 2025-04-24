@@ -20,6 +20,7 @@ class Category extends BaseEntity {
   title!: string;
 
   @OneToMany(() => Ad, (ad) => ad.category)
+  @Field(()=> [Ad])
   ads!: Ad[];
 }
 

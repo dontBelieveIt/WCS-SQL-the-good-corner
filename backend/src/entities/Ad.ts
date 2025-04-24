@@ -45,10 +45,12 @@ import { Field, ObjectType } from "type-graphql";
     @Field()
     @Column()
     location!: string;
-  
+    
+    @Field(() => Category)
     @ManyToOne(() => Category, (category) => category.ads, { eager: true })
     category!: Category;
-  
+
+    @Field(() => [Tag])
     @ManyToMany(() => Tag, { eager: true })
     @JoinTable()
     tags!: Tag[];

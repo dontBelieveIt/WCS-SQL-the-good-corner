@@ -1,13 +1,42 @@
 // Importing necessary decorators and types from type-graphql and typeorm
-import { Query, Resolver } from "type-graphql";
+import { Arg, Field, ID, InputType, Mutation, Query, Resolver } from "type-graphql";
 import Ad from "../entities/Ad"; // Importing the Ad entity, which represents the ads in the database
 import { FindManyOptions } from "typeorm"; // Importing options for querying the database
+import Category from "../entities/Category";
+import Tag from "../entities/Tag";
 
 // This resolver is part of the transition from a RESTful API to GraphQL.
 // It handles GraphQL queries related to ads, which are similar to listings on platforms like Leboncoin or Craigslist.
+@InputType()
+class AdInput {
+
+    @Field()
+    title!: string; 
+
+    @Field()
+    description!: string; 
+
+    @Field()
+    owner!: string; 
+
+    @Field()
+    price!: number;
+
+    @Field()
+    location!: string;
+
+    @Field()
+    picture!: string; 
+
+    @Field(() => ID)
+    category!: Category
+
+    @Field(() => ID)
+    tags!: Tag[]
+}
 
 @Resolver(Ad) // Declaring this class as a GraphQL resolver for the Ad entity
-class AdResolver {
+export default class AdResolver {
     // GraphQL query to fetch all ads from the database
     @Query(() => [Ad]) // This query returns an array of Ad objects
     async getAllAds() {
@@ -50,5 +79,27 @@ class AdResolver {
             // Logging any errors that occur during the query execution
             console.info(error);
         }
+    }
+
+    @Mutation(() => Ad) // This mutation returns an Ad object
+    async createAd(@Arg("data") data:AdInput) {
+        const ad = new Ad; 
+
+        ad.title = data.title;
+        ad.description = data.description;
+        ad.owner = data.owner;
+        ad.price = data.price;
+        ad.picture = data.picture;
+        ad.location = data.location;
+        ad.category = data.category;
+    // ['1','2'] => [{id:1}, {id:2}]
+    //ad.tags = data.tags.map((tag) => ({ id: tag.id }));
+    try {
+      await ad.save();
+      return ad;
+    } catch (err) {
+      console.warn(err);
+      return ad;
+    }
     }
 }
