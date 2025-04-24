@@ -1,14 +1,76 @@
 GET http://localhost:3000/categories
 
 
+
 ###
 
 POST http://localhost:3000/categories
 Content-Type: application/json
 
 {
-    "title" : "and another one"
+    "title": "real estate"
 }
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "vehicle"
+}
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "holidays"
+}
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "fashion"
+}
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "house & garden"
+}
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "family"
+}
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "electronic"
+}
+
 
 ###
 

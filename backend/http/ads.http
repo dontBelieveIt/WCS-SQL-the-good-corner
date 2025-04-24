@@ -19,6 +19,168 @@ Content-Type: application/json
 
 ###
 
+###
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+{
+    "title": "Solid oak dining table",
+    "description": "Must see to appreciate the value!",
+    "owner": "info@website.fr",
+    "price": 366,
+    "picture": "https://cdn.pixabay.com/photo/2014/11/21/17/17/home-540796_960_720.jpg",
+    "location": "Nice",
+    "createdAt": "2024-03-30",
+    "category": 5,
+    "tags": [{"id":1}, {"id":5}, {"id":4}]
+}
+
+###
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+{
+    "title": "Collection of rare comics",
+    "description": "Ideal for enthusiasts.",
+    "owner": "contact@domain.com",
+    "price": 2443,
+    "picture": "https://cdn.pixabay.com/photo/2014/10/23/18/05/book-500404_960_720.jpg",
+    "location": "Marseille",
+    "createdAt": "2024-04-05",
+    "category": 8,
+    "tags": [{"id":9}]
+}
+
+###
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+{
+    "title": "Homemade scented candles",
+    "description": "Very comfortable and stylish.",
+    "owner": "user123@yahoo.com",
+    "price": 3431,
+    "picture": "https://cdn.pixabay.com/photo/2017/01/06/19/15/cat-1958376_960_720.jpg",
+    "location": "Strasbourg",
+    "createdAt": "2023-09-24",
+    "category": 9,
+    "tags": [{"id":1}, {"id":5}, {"id":2}]
+}
+
+###
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+{
+    "title": "High-performance laptop",
+    "description": "Very comfortable and stylish.",
+    "owner": "info@website.fr",
+    "price": 4186,
+    "picture": "https://cdn.pixabay.com/photo/2015/01/08/18/27/tablet-593655_960_720.jpg",
+    "location": "Lille",
+    "createdAt": "2023-10-17",
+    "category": 7,
+    "tags": [{"id":11}, {"id":10}, {"id":14}, {"id":4}]
+}
+
+###
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+{
+    "title": "Masquerade costume - one of a kind",
+    "description": "Limited edition item, hard to find.",
+    "owner": "user123@yahoo.com",
+    "price": 1853,
+    "picture": "https://cdn.pixabay.com/photo/2017/02/15/10/39/mask-2063821_960_720.jpg",
+    "location": "Nantes",
+    "createdAt": "2024-02-04",
+    "category": 8,
+    "tags": [{"id":8}, {"id":6}]
+}
+
+###
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+{
+    "title": "Baby stroller in great condition",
+    "description": "Barely used, practically new.",
+    "owner": "amazing.seller@gmail.com",
+    "price": 158,
+    "picture": "https://cdn.pixabay.com/photo/2015/07/02/10/22/baby-828890_960_720.jpg",
+    "location": "Paris",
+    "createdAt": "2023-11-19",
+    "category": 6,
+    "tags": [{"id":2}, {"id":13}]
+}
+
+###
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+{
+    "title": "Designer handbag - barely used",
+    "description": "Price is negotiable. Contact for more info.",
+    "owner": "contact@domain.com",
+    "price": 3271,
+    "picture": "https://cdn.pixabay.com/photo/2016/03/09/09/30/model-1245955_960_720.jpg",
+    "location": "Toulouse",
+    "createdAt": "2023-11-03",
+    "category": 4,
+    "tags": [{"id":15}]
+}
+
+###
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+{
+    "title": "Second-hand mountain bike",
+    "description": "Limited edition item, hard to find.",
+    "owner": "info@website.fr",
+    "price": 1449,
+    "picture": "https://cdn.pixabay.com/photo/2012/05/29/00/43/car-49278_960_720.jpg",
+    "location": "Grenoble",
+    "createdAt": "2023-12-19",
+    "category": 2,
+    "tags": [{"id":6}, {"id":2}]
+}
+
+###
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+{
+    "title": "Last-minute holiday deal",
+    "description": "Barely used, practically new.",
+    "owner": "amazing.seller@gmail.com",
+    "price": 2805,
+    "picture": "https://cdn.pixabay.com/photo/2017/06/20/19/22/hiking-2422140_960_720.jpg",
+    "location": "Lyon",
+    "createdAt": "2024-01-29",
+    "category": 3,
+    "tags": [{"id":8}, {"id":4}, {"id":10}]
+}
+
+###
+POST http://localhost:3000/ads
+Content-Type: application/json
+
+{
+    "title": "Charming apartment in city center",
+    "description": "Price is negotiable. Contact for more info.",
+    "owner": "user123@yahoo.com",
+    "price": 2580,
+    "picture": "https://cdn.pixabay.com/photo/2016/11/29/02/44/house-1867187_960_720.jpg",
+    "location": "Bordeaux",
+    "createdAt": "2023-10-29",
+    "category": 1,
+    "tags": [{"id":4}, {"id":5}, {"id":1}]
+}
+
+###
+
 DELETE http://localhost:3000/ads/1
 Content-Type: application/json
 

@@ -3,22 +3,150 @@ GET http://localhost:3000/tags
 ###
 
 POST http://localhost:3000/tags
-Content-Type:  application/json 
-
-{
-    "title": "the fourth one"
-}
-
-###
-
-PUT http://localhost:3000/tags/4
 Content-Type: application/json
 
 {
-    "title": "modified title"
+    "title": "vintage"
 }
+
 
 ###
 
-DELETE http://localhost:3000/tags/2
+POST http://localhost:3000/tags
 Content-Type: application/json
+
+{
+    "title": "new"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "eco-friendly"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "handmade"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "limited edition"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "urgent"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "negotiable"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "unused"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "refurbished"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "collectible"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "child-friendly"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "outdoor"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "compact"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "wireless"
+}
+
+
+###
+
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+    "title": "energy-efficient"
+}
+
+###
