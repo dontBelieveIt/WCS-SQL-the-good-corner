@@ -20,37 +20,8 @@ app.use(express.json());
 
 // ADS CRUD ! **********************************************************************************
 // Get all ads from DB
-app.get('/ads', async (req, res) => {
-  try {
-    let findOptions: FindManyOptions<Ad> = {
-        relations: { 
-          category : true, 
-          tags: true,
-        }, 
-    }
-    if (req.query.category !== undefined) {
-      findOptions = {
-        ...findOptions, 
-        where : {
-          category: {id:Number.parseInt(req.query.category as string)}, 
-        },
-      };
-    }
-    const allAds = await Ad.find(findOptions);
-    res.send(allAds); 
-  } catch (error) {
-    res.status(500).send(error)
-  }
-})
 
-//get a particular ads from DB 
-
-app.get("/ads/:id", async (req, res) => {
-  const result = await Ad.findOneByOrFail({
-    id: Number.parseInt(req.params.id),
-  });
-  res.send(result);
-});
+// git all ads has been moved to ./resolver/AdResolver
 
 // Post new add
 app.post("/ads", async (req, res) => {
