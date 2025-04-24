@@ -4,11 +4,12 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone"
 import { buildSchema } from "type-graphql";
 import AdResolver from "./resolvers/AdResolvers";
+import CategoryResolver from "./resolvers/CategoryResolvers";
 
 const port = 3000; 
 async function startServer() {
   await dataSource.initialize(); 
-  const schema = await buildSchema({resolvers: [AdResolver]});
+  const schema = await buildSchema({resolvers: [AdResolver, CategoryResolver]});
   const apolloServer = new ApolloServer({schema})
   const { url } = await startStandaloneServer(apolloServer, {
     listen : { port},
@@ -17,15 +18,10 @@ async function startServer() {
 }
 startServer(); 
 
-// SQLite DB and good_corner db init
-// const db = new sqlite3.Database("good_corner.sqlite"); 
-
 // ADS CRUD ! **********************************************************************************
 
 // git all ads has been moved to ./resolver/AdResolver
-
 // Post new add has been moved to ./resolver/AdResolver
-
 // app.put("/ads/:id", async (req, res) => {
 //   try {
 //     const body = req.body; 

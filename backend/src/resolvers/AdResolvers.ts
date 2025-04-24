@@ -9,15 +9,17 @@ import Tag from "../entities/Tag";
 // It handles GraphQL queries related to ads, which are similar to listings on platforms like Leboncoin or Craigslist.
 @InputType()
 class AdInput {
+    @Field()
+    id!: string; 
 
     @Field()
-    title!: string; 
+    title!: string;
 
     @Field()
-    description!: string; 
+    description!: string;
 
     @Field()
-    owner!: string; 
+    owner!: string;
 
     @Field()
     price!: number;
@@ -26,7 +28,7 @@ class AdInput {
     location!: string;
 
     @Field()
-    picture!: string; 
+    picture!: string;
 
     @Field(() => ID)
     category!: Category
@@ -82,8 +84,8 @@ export default class AdResolver {
     }
 
     @Mutation(() => Ad) // This mutation returns an Ad object
-    async createAd(@Arg("data") data:AdInput) {
-        const ad = new Ad; 
+    async createAd(@Arg("data") data: AdInput) {
+        const ad = new Ad;
 
         ad.title = data.title;
         ad.description = data.description;
@@ -92,14 +94,24 @@ export default class AdResolver {
         ad.picture = data.picture;
         ad.location = data.location;
         ad.category = data.category;
-    // ['1','2'] => [{id:1}, {id:2}]
-    //ad.tags = data.tags.map((tag) => ({ id: tag.id }));
-    try {
-      await ad.save();
-      return ad;
-    } catch (err) {
-      console.warn(err);
-      return ad;
+        // ['1','2'] => [{id:1}, {id:2}]
+        //ad.tags = data.tags.map((tag) => ({ id: tag.id }));
+        try {
+            await ad.save();
+            return ad;
+        } catch (err) {
+            console.error(err);
+            return ad;
+        }
     }
+
+    @Mutation(() => Ad)
+    async deleteAd(@Arg("data") data: AdInput) {
+        try {
+            await Ad.delete({id:Number.parseInt(data.id) });
+            console.info(`Ad number ${data.id} has been deleted! `)
+          } catch (error) {
+            console.error(500 + " : " + error); 
+          }
     }
 }
