@@ -1,27 +1,44 @@
-import { Query, Resolver } from "type-graphql";
+import { Arg, Field, ID, InputType, Mutation, Query, Resolver } from "type-graphql";
 import Category from "../entities/Category";
+import Ad from "../entities/Ad";
+import { FindManyOptions } from "typeorm";
+
+@InputType()
+class CategoryInput {
+    @Field()
+    title!: string 
+
+    @Field(() => ID)
+    ads!: Ad[];
+}
 
 @Resolver(Category)
 export default class CategoryResolver {
     @Query(() => [Category])
     async getAllCategory() {
+        let findOptions: FindManyOptions<Category> = {
+            relations: {ads: true}
+        }
         try {
-            const allCategories = await Category.find();
+            const allCategories = await Category.find(findOptions);
             return allCategories
         } catch (error) {
-            console.error(500 + `${error}`);
+            throw new Error(500 + ": read categories");
         }
     }
 
-    // app.post("/categories", async (req, res) => {
-    //   try {
-    //     const newCategory = new Category(); 
-    //     String(req.body.title).charAt(0).toUpperCase() + String(req.body.title).slice(1);
-    //     newCategory.title = req.body.title; 
-    //     await newCategory.save(); 
-    //     res.status(201).send(`The new category "${req.body.title}" has been added !`); 
-    //   } catch (error) {
-    //     res.status(500).send(error)
-    //   }
-    // })
+    @Mutation(() => ID)
+    async addNewCategory(@Arg("data") data: CategoryInput) {
+        const newCategory = new Category(); 
+        String(data.title).charAt(0).toUpperCase() + String(data.title).slice(1);
+        newCategory.title = data.title; 
+    try {
+        await newCategory.save(); 
+        console.info(200 + ` The new category "${data.title}" has been added !`); 
+        return newCategory.id; 
+      } catch (error) {
+       console.error(500+`${error}`)
+       throw new Error(500 + ": an unexpected error occudred when category creation");
+      }
+    }
 }

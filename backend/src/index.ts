@@ -5,11 +5,12 @@ import { startStandaloneServer } from "@apollo/server/standalone"
 import { buildSchema } from "type-graphql";
 import AdResolver from "./resolvers/AdResolvers";
 import CategoryResolver from "./resolvers/CategoryResolvers";
+import TagResolver from "./resolvers/TagResolvers";
 
 const port = 3000; 
 async function startServer() {
   await dataSource.initialize(); 
-  const schema = await buildSchema({resolvers: [AdResolver, CategoryResolver]});
+  const schema = await buildSchema({resolvers: [AdResolver, CategoryResolver, TagResolver]});
   const apolloServer = new ApolloServer({schema})
   const { url } = await startStandaloneServer(apolloServer, {
     listen : { port},
@@ -44,29 +45,6 @@ startServer();
 //   }
  
 // })
-
-// // CATEGORIES CRUD ! **********************************************************************************
-// app.get("/categories", async (_req, res) => {
-//   try {
-//     const allCategories = await Category.find(); 
-//     res.send(allCategories)
-//   } catch (error) {
-//     res.status(500).send(error)
-//   }
-// })
-
-// app.post("/categories", async (req, res) => {
-//   try {
-//     const newCategory = new Category(); 
-//     String(req.body.title).charAt(0).toUpperCase() + String(req.body.title).slice(1);
-//     newCategory.title = req.body.title; 
-//     await newCategory.save(); 
-//     res.status(201).send(`The new category "${req.body.title}" has been added !`); 
-//   } catch (error) {
-//     res.status(500).send(error)
-//   }
-// })
-
 
 // app.delete("/categories/:id", async (req, res) => {
 //   try {

@@ -54,7 +54,7 @@ export default class AdResolver {
             // These would need to be adapted for GraphQL if similar filtering is required.
 
             // Example: Filtering ads by category
-            // if (req.query.category !== undefined) {
+            // if () {
             //   findOptions = {
             //     ...findOptions,
             //     where: {
@@ -83,7 +83,7 @@ export default class AdResolver {
         }
     }
 
-    @Mutation(() => Ad) // This mutation returns an Ad object
+    @Mutation(() => ID) // This mutation returns an Ad object
     async createAd(@Arg("data") data: AdInput) {
         const ad = new Ad;
 
@@ -98,7 +98,7 @@ export default class AdResolver {
         //ad.tags = data.tags.map((tag) => ({ id: tag.id }));
         try {
             await ad.save();
-            return ad;
+            return ad.id;
         } catch (err) {
             console.error(err);
             return ad;

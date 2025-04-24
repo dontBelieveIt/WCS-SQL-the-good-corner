@@ -15,11 +15,11 @@ class Tag extends BaseEntity {
   @Field()
   id!: number;
 
-  @Column()
+  @Column({unique : true})
   @Field()
   title!: string;
 
-  @ManyToMany(() => Ad)
+  @ManyToMany(() => Ad, (ad) => ad.tags)
   @Field(() => [Ad])
   ads!: Ad[];
 }
