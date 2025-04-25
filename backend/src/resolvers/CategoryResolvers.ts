@@ -1,15 +1,11 @@
 import { Arg, Field, ID, InputType, Mutation, Query, Resolver } from "type-graphql";
 import Category from "../entities/Category";
-import Ad from "../entities/Ad";
 import { FindManyOptions } from "typeorm";
 
 @InputType()
 class CategoryInput {
     @Field()
     title!: string 
-
-    @Field(() => ID)
-    ads!: Ad[];
 }
 
 @Resolver(Category)
@@ -30,7 +26,6 @@ export default class CategoryResolver {
     @Mutation(() => ID)
     async addNewCategory(@Arg("data") data: CategoryInput) {
         const newCategory = new Category(); 
-        String(data.title).charAt(0).toUpperCase() + String(data.title).slice(1);
         newCategory.title = data.title; 
     try {
         await newCategory.save(); 

@@ -4,13 +4,12 @@ import Ad from "../entities/Ad"; // Importing the Ad entity, which represents th
 import { FindManyOptions } from "typeorm"; // Importing options for querying the database
 import Category from "../entities/Category";
 import Tag from "../entities/Tag";
+import CategoryResolver from "./CategoryResolvers";
 
 // This resolver is part of the transition from a RESTful API to GraphQL.
 // It handles GraphQL queries related to ads, which are similar to listings on platforms like Leboncoin or Craigslist.
 @InputType()
 class AdInput {
-    @Field()
-    id!: string; 
 
     @Field()
     title!: string;
@@ -31,10 +30,10 @@ class AdInput {
     picture!: string;
 
     @Field(() => ID)
-    category!: Category
+    category!: Category;
 
-    @Field(() => ID)
-    tags!: Tag[]
+    @Field(() => [ID])
+    tags!: Tag[];
 }
 
 @Resolver(Ad) // Declaring this class as a GraphQL resolver for the Ad entity
@@ -42,40 +41,13 @@ export default class AdResolver {
     // GraphQL query to fetch all ads from the database
     @Query(() => [Ad]) // This query returns an array of Ad objects
     async getAllAds() {
+        let findOptions: FindManyOptions<Ad> = {
+            relations: { category: true, tags: true },
+        };
         try {
-            // Defining options for the database query
-            // Relations specify that the 'category' and 'tags' fields should be fetched along with the ads
-            let findOptions: FindManyOptions<Ad> = {
-                relations: { category: true, tags: true },
-            };
-
-            // The following commented-out code represents logic that was used in the RESTful API
-            // It demonstrates how query parameters like 'category' and 'search' were handled in the REST API.
-            // These would need to be adapted for GraphQL if similar filtering is required.
-
-            // Example: Filtering ads by category
-            // if () {
-            //   findOptions = {
-            //     ...findOptions,
-            //     where: {
-            //       category: { id: Number.parseInt(req.query.category as string) },
-            //     },
-            //   };
-            // }
-
-            // Example: Searching ads by title
-            // if (req.query.search !== undefined) {
-            //   console.log("search query", req.query.search);
-            //   findOptions = {
-            //     ...findOptions,
-            //     where: { title: ILike(`%${req.query.search}%`) },
-            //   };
-            // }
-
             // Fetching all ads from the database using the defined options
+        
             const allAds = await Ad.find(findOptions);
-
-            // Returning the fetched ads to the GraphQL client
             return allAds;
         } catch (error) {
             // Logging any errors that occur during the query execution
@@ -83,35 +55,40 @@ export default class AdResolver {
         }
     }
 
+    @Query(() => Ad)
+    async getAd(@Arg("id") id: number) {
+        const ad = await Ad.findOneByOrFail({ id }); 
+        return ad; 
+    }
+
     @Mutation(() => ID) // This mutation returns an Ad object
     async createAd(@Arg("data") data: AdInput) {
-        const ad = new Ad;
+        const ad = Ad.create({
+            ...data, 
+            tags: data.tags.map((tag) => ({ id: Number(tag) })),
+        });
 
-        ad.title = data.title;
-        ad.description = data.description;
-        ad.owner = data.owner;
-        ad.price = data.price;
-        ad.picture = data.picture;
-        ad.location = data.location;
-        ad.category = data.category;
-        // ['1','2'] => [{id:1}, {id:2}]
-        //ad.tags = data.tags.map((tag) => ({ id: tag.id }));
         try {
             await ad.save();
             return ad.id;
         } catch (err) {
             console.error(err);
-            return ad;
         }
     }
 
-    @Mutation(() => Ad)
-    async deleteAd(@Arg("data") data: AdInput) {
-        try {
-            await Ad.delete({id:Number.parseInt(data.id) });
-            console.info(`Ad number ${data.id} has been deleted! `)
-          } catch (error) {
-            console.error(500 + " : " + error); 
-          }
+    @Mutation(() => ID)
+    async updateAd(@Arg("id") id: number, @Arg("data") data: AdInput) {
+        let ad = await Ad.findOneByOrFail({ id }); 
+        ad = Object.assign(ad, data, {
+            tags: data.tags.map((tag) => ({ id : Number(tag)})), 
+        }); 
+        await ad.save(); 
+        return ad.id; 
+    }
+
+    @Mutation(() => ID)
+    async DeleteDateColumn(@Arg("id") id: number) {
+        await Ad.delete({ id }); 
+        return id; 
     }
 }

@@ -24,4 +24,4 @@ class Tag extends BaseEntity {
   ads!: Ad[];
 }
 
-export default Tag;
+export default Tag

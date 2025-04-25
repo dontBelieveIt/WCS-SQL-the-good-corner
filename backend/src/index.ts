@@ -6,11 +6,21 @@ import { buildSchema } from "type-graphql";
 import AdResolver from "./resolvers/AdResolvers";
 import CategoryResolver from "./resolvers/CategoryResolvers";
 import TagResolver from "./resolvers/TagResolvers";
+import Category from "./entities/Category";
 
 const port = 3000; 
 async function startServer() {
   await dataSource.initialize(); 
-  const schema = await buildSchema({resolvers: [AdResolver, CategoryResolver, TagResolver]});
+  // const categories = await Category.find();
+  // if (categories.length === 0) {
+  //   console.log("categories'list :" + categories.length)
+  //   const misc = new Category();
+  //   misc.title = "misc";
+  //   misc.save();
+  // } else {
+  //   console.info("categories has been loaded ?")
+  // }
+  const schema = await buildSchema({resolvers: [CategoryResolver, AdResolver, TagResolver]});
   const apolloServer = new ApolloServer({schema})
   const { url } = await startStandaloneServer(apolloServer, {
     listen : { port},
@@ -20,7 +30,31 @@ async function startServer() {
 startServer(); 
 
 // ADS CRUD ! **********************************************************************************
+// Defining options for the database query
+            // Relations specify that the 'category' and 'tags' fields should be fetched along with the ads
 
+            // The following commented-out code represents logic that was used in the RESTful API
+            // It demonstrates how query parameters like 'category' and 'search' were handled in the REST API.
+            // These would need to be adapted for GraphQL if similar filtering is required.
+
+            // Example: Filtering ads by category
+            // if () {
+            //   findOptions = {
+            //     ...findOptions,
+            //     where: {
+            //       category: { id: Number.parseInt(req.query.category as string) },
+            //     },
+            //   };
+            // }
+
+            // Example: Searching ads by title
+            // if (req.query.search !== undefined) {
+            //   console.log("search query", req.query.search);
+            //   findOptions = {
+            //     ...findOptions,
+            //     where: { title: ILike(`%${req.query.search}%`) },
+            //   };
+            // }
 // git all ads has been moved to ./resolver/AdResolver
 // Post new add has been moved to ./resolver/AdResolver
 // app.put("/ads/:id", async (req, res) => {
@@ -88,6 +122,4 @@ startServer();
 //   }
 
 // })
-
-// APP LISTEN ! **********************************************************************************
 
