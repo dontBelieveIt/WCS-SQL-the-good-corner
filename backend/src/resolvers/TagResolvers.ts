@@ -20,7 +20,7 @@ export default class TagResolver {
         try {
             const allTags = await Tag.find(findOptions);
             console.info(200);
-            return allTags
+            return allTags;
         } catch (error) {
             console.error(500 + `${error}`);
             throw new Error(500 + ": an error occured : read tags");
@@ -28,9 +28,8 @@ export default class TagResolver {
     }
 
     @Mutation(() => ID)
-    async postNewTag(@Arg("data") data: TagInput) {
-        const newTag = new Tag();
-        newTag.title = data.title;
+    async createTag(@Arg("data") data: TagInput) {
+        const newTag = Tag.create({ ...data });
         try {
             await newTag.save();
             console.info(`New tag "${data.title}" added !`)
