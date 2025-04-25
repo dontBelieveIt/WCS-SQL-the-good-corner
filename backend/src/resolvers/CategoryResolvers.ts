@@ -25,8 +25,9 @@ export default class CategoryResolver {
 
     @Mutation(() => ID)
     async addNewCategory(@Arg("data") data: CategoryInput) {
-        const newCategory = new Category(); 
-        newCategory.title = data.title; 
+        const newCategory = Category.create({
+            ...data
+        }); 
     try {
         await newCategory.save(); 
         console.info(200 + ` The new category "${data.title}" has been added !`); 
