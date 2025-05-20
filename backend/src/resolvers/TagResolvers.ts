@@ -1,7 +1,6 @@
 import { Arg, Field, ID, InputType, Mutation, Query, Resolver } from "type-graphql";
-import Tag from "../entities/Tag";
-import Ad from "../entities/Ad";
-import { FindManyOptions } from "typeorm";
+import Tag from "../entities/Tag"; //Represent the tag entity in the database
+import { FindManyOptions } from "typeorm"; //Provides options for database query
 
 @InputType()
 class TagInput {

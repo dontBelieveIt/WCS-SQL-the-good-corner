@@ -1,94 +1,78 @@
 // Importing necessary decorators and types from type-graphql and typeorm
 import { Arg, Field, ID, InputType, Mutation, Query, Resolver } from "type-graphql";
-import Ad from "../entities/Ad"; // Importing the Ad entity, which represents the ads in the database
-import { FindManyOptions } from "typeorm"; // Importing options for querying the database
-import Category from "../entities/Category";
-import Tag from "../entities/Tag";
-import CategoryResolver from "./CategoryResolvers";
+import Ad from "../entities/Ad"; // Represents the Ad entity in the database
+import { FindManyOptions } from "typeorm"; // Provides options for database queries
+import Category from "../entities/Category"; // Represents categories associated with ads
+import Tag from "../entities/Tag"; // Represents tags associated with ads
 
-// This resolver is part of the transition from a RESTful API to GraphQL.
-// It handles GraphQL queries related to ads, which are similar to listings on platforms like Leboncoin or Craigslist.
+// Input type for creating or updating ads in GraphQL
 @InputType()
 class AdInput {
-
-    @Field()
-    title!: string;
-
-    @Field()
-    description!: string;
-
-    @Field()
-    owner!: string;
-
-    @Field()
-    price!: number;
-
-    @Field()
-    location!: string;
-
-    @Field()
-    picture!: string;
-
-    @Field(() => ID)
-    category!: Category;
-
-    @Field(() => [ID])
-    tags!: Tag[];
+    @Field() title!: string; // Title of the ad
+    @Field() description!: string; // Description of the ad
+    @Field() owner!: string; // Owner of the ad
+    @Field() price!: number; // Price of the item in the ad
+    @Field() location!: string; // Location of the item
+    @Field() picture!: string; // URL or path to the ad's picture
+    @Field(() => ID) category!: Category; // Category of the ad
+    @Field(() => [ID]) tags!: Tag[]; // Tags associated with the ad
 }
 
-@Resolver(Ad) // Declaring this class as a GraphQL resolver for the Ad entity
+// Resolver for handling GraphQL queries and mutations related to ads
+@Resolver(Ad)
 export default class AdResolver {
-    // GraphQL query to fetch all ads from the database
-    @Query(() => [Ad]) // This query returns an array of Ad objects
+    // Query to fetch all ads from the database
+    @Query(() => [Ad])
     async getAllAds() {
         let findOptions: FindManyOptions<Ad> = {
-            relations: { category: true, tags: true },
+            relations: { category: true, tags: true }, // Include related categories and tags (join column (category) and join-table (tags))
         };
         try {
-            // Fetching all ads from the database using the defined options
-        
-            const allAds = await Ad.find(findOptions);
-            return allAds;
+            const allAds = await Ad.find(findOptions); // Fetch ads with the specified options
+            return allAds; // Return the list of ads
         } catch (error) {
-            // Logging any errors that occur during the query execution
-            console.info(error);
+            console.info(error); // Log any errors
         }
     }
 
+    // Query to fetch a single ad by its ID
     @Query(() => Ad)
     async getAd(@Arg("id") id: number) {
-        const ad = await Ad.findOneByOrFail({ id }); 
-        return ad; 
+        const ad = await Ad.findOneByOrFail({ id }); // Find the ad or throw an error if not found
+        return ad; // Return the ad
     }
 
-    @Mutation(() => ID) // This mutation returns an Ad object
+    // Mutation to create a new ad
+    @Mutation(() => ID)
     async createAd(@Arg("data") data: AdInput) {
         const ad = Ad.create({
-            ...data, 
-            tags: data.tags.map((tag) => ({ id: Number(tag) })),
+            ...data, // Spread the input data
+            tags: data.tags.map((tag) => ({ id: Number(tag) })), // Map tag IDs to tag objects
         });
 
         try {
-            await ad.save();
-            return ad.id;
+            await ad.save(); // Save the new ad to the database
+            return ad.id; // Return the ID of the created ad
         } catch (err) {
-            console.error(err);
+            console.error(err); // Log any errors
         }
     }
 
+    // Mutation to update an existing ad
     @Mutation(() => ID)
     async updateAd(@Arg("id") id: number, @Arg("data") data: AdInput) {
-        let ad = await Ad.findOneByOrFail({ id }); 
+        let ad = await Ad.findOneByOrFail({ id }); // Find the ad to update by its id (if id === parameter.id )
         ad = Object.assign(ad, data, {
-            tags: data.tags.map((tag) => ({ id : Number(tag)})), 
-        }); 
-        await ad.save(); 
-        return ad.id; 
+            tags: data.tags.map((tag) => ({ id: Number(tag) })), // Update tags [{"id" : "1"}, {"id" : "2"}]
+        });
+        await ad.save(); // Save the updated ad
+        return ad.id; // Return the ID of the updated ad
     }
 
+    // Mutation to delete an ad by its ID
     @Mutation(() => ID)
-    async DeleteDateColumn(@Arg("id") id: number) {
-        await Ad.delete({ id }); 
-        return id; 
+    async DeleteAd(@Arg("id") id: number) {
+        await Ad.delete({ id }); // Delete the ad from the database
+        return id; // Return the ID of the deleted ad
     }
 }

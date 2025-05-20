@@ -13,15 +13,15 @@ import { Field, ObjectType } from "type-graphql";
 class Tag extends BaseEntity {
   @PrimaryGeneratedColumn()
   @Field()
-  id!: number;
+  id: number;
 
-  @Column({unique : true})
+  @Column({ unique: true })
   @Field()
-  title!: string;
+  title: string;
 
   @ManyToMany(() => Ad, (ad) => ad.tags)
   @Field(() => [Ad])
-  ads!: Ad[];
+  ads: Ad[];
 }
 
-export default Tag
+export default Tag;

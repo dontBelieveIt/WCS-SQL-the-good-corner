@@ -6,11 +6,11 @@ import { adsTypes } from "../types/adsTypes";
 import { Link } from "react-router";
 import { Tags } from "../types/Tags";
 import { toast } from "react-toastify";
-
-const endPoint = "http://localhost:3000"; 
+import { endPoint } from "../endPoint";
 
 const PublishNewAdd = () => {
     // To show the different categories and fetch them from the BD
+    const todayDate = new Date("2015-03-25");
     const [categories, setCategories] = useState<Categories[]>([]);     
     const [tags, setTags] = useState<Tags[]>([]); 
     useEffect(()=>{
@@ -76,9 +76,6 @@ const PublishNewAdd = () => {
             <label>Location
                 <input type="text" defaultValue={"Neverland"}{...register("location", {required: true})}></input>
             </label>
-            <label>Date of creation
-                <input type="date" defaultValue={"01/01/2021"}{...register("createdAt", {required:true })}></input>
-            </label>
             <select name="category_id">
                 {categories.map(item => 
                     <option value={item.id} key={item.id}>{item.title}</option>
@@ -88,7 +85,7 @@ const PublishNewAdd = () => {
                 <legend>Tags</legend>
                 {tags.map((tag)=> 
                 <div key={tag.id}>
-                <input value={tag.id} type="checkbox" {...register("tags")}/>
+                {/* <input value={tag.id} type="checkbox" {...register("tags")}/> */}
                 <label htmlFor={tag.title}>{tag.title}</label>
                 </div>
                 )}

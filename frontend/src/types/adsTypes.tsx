@@ -6,7 +6,7 @@ export type adsTypes = {
   price : number; 
   picture : string; 
   location : string; 
-  createdAt : Date;
+  createdAt : string;
   category_id : number; 
-  // tag_id : number[];
+  tag_id : number[];
   }

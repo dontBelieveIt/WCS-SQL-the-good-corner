@@ -15,45 +15,46 @@ import { Field, ObjectType } from "type-graphql";
 @Entity()
 @ObjectType()
 class Ad extends BaseEntity {
-  @Field()
   @PrimaryGeneratedColumn()
-  id!: number;
-
   @Field()
-  @Column()
-  title!: string;
+  id: number;
 
-  @Field()
   @Column()
-  description!: string;
+  @Field()
+  title: string;
 
-  @Field()
   @Column()
-  owner!: string;
+  @Field()
+  description: string;
 
-  @Field()
   @Column()
-  price!: number;
+  @Field()
+  owner: string;
+
+  @Column()
+  @Field()
+  price: number;
 
   @CreateDateColumn()
-  createdAt!: Date;
-
   @Field()
-  @Column()
-  picture!: string;
+  createdAt: Date;
 
+  @Column()
   @Field()
-  @Column()
-  location!: string;
+  picture: string;
 
-  @Field(() => Category)
+  @Column()
+  @Field()
+  location: string;
+
   @ManyToOne(() => Category, (category) => category.ads, { eager: true })
-  category!: Category;
+  @Field(() => Category)
+  category: Category;
 
   @ManyToMany(() => Tag, (tag) => tag.ads, { eager: true })
   @JoinTable()
   @Field(() => [Tag])
-  tags!: Tag[];
+  tags: Tag[];
 }
 
 export default Ad;

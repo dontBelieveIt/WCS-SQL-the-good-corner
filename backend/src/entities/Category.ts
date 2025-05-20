@@ -13,15 +13,15 @@ import { Field, ObjectType } from "type-graphql";
 class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   @Field()
-  id!: number;
+  id: number;
 
   @Column({ unique: true })
   @Field()
-  title!: string;
+  title: string;
 
   @OneToMany(() => Ad, (ad) => ad.category)
-  @Field(()=> [Ad])
-  ads!: Ad[];
+  @Field(() => [Ad])
+  ads: Ad[];
 }
 
 export default Category;
