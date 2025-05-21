@@ -1,10 +1,14 @@
 services:
   backend:
-    build: backend
+    build: ./backend
     ports:
-      - "3000:3000"
+      - 3000:3000
+    volumes:
+      - ./backend/src/:/app/src
 
   frontend:
-    build: frontend
+    build: ./frontend
     ports:
-      - "5173:5173"
+      - 5173:5173
+    volume:
+      - ./frontend/src/:/app/src/
