@@ -6,7 +6,11 @@ import { buildSchema } from "type-graphql";
 import AdResolver from "./resolvers/AdResolver";
 import CategoryResolver from "./resolvers/CategoryResolver";
 import TagResolver from "./resolvers/TagResolver";
-const port = 3000;
+
+import * as dotenv from "dotenv"; 
+dotenv.config();
+const { BE_ENDPOINT } = process.env; 
+const port = BE_ENDPOINT ? parseInt(BE_ENDPOINT, 10) : 3000; 
 
 async function startServer() {
   await dataSource.initialize();
