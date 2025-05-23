@@ -15,8 +15,8 @@ const AdDetailsPage = () => {
     variables: { getAdId: Number(id) },
   });
 
-  if (loading) return <><NoPageFound /></>;
-  if (error) return <p>Oups, something unexpected happened.</p>;
+  if (loading) return <>loading...</>;
+  if (error) return <><NoPageFound /></>;
 
   return (
     <main className="main-content">

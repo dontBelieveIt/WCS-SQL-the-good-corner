@@ -14,7 +14,7 @@ class CategoryInput {
 export default class CategoryResolver {
     // Query to fetch all categories from the database
     @Query(() => [Category])
-    async getAllCategory() {
+    async getAllCategories() {
         let findOptions: FindManyOptions<Category> = {
             relations: { ads: true }, // Include related ads (join column)
         };

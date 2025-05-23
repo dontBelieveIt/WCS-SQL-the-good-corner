@@ -71,7 +71,7 @@ export default class AdResolver {
 
     // Mutation to delete an ad by its ID
     @Mutation(() => ID)
-    async DeleteAd(@Arg("id") id: number) {
+    async deleteAd(@Arg("id") id: number) {
         await Ad.delete({ id }); // Delete the ad from the database
         return id; // Return the ID of the deleted ad
     }

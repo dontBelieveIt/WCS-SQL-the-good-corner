@@ -3,9 +3,9 @@ import dataSource from "./config/db";
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { buildSchema } from "type-graphql";
-import AdResolver from "./resolvers/AdResolver";
-import CategoryResolver from "./resolvers/CategoryResolver";
-import TagResolver from "./resolvers/TagResolver";
+import AdResolver from "./resolvers/AdResolvers";
+import CategoryResolver from "./resolvers/CategoryResolvers";
+import TagResolver from "./resolvers/TagResolvers";
 
 import * as dotenv from "dotenv"; 
 dotenv.config();

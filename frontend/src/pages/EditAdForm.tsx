@@ -1,8 +1,7 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { AdDetails, Category, Tag } from "../types";
+import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
+import { useCreateAdMutation, useGetAdQuery, useGetAllCategoriesQuery } from "../generated/graphql-types";
+import NoPageFound from "./NoPageFound";
 
 type Inputs = {
   title: string;
@@ -17,37 +16,41 @@ type Inputs = {
 
 const EditAdForm = () => {
   const { id } = useParams();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [ad, setAd] = useState<AdDetails>();
-  useEffect(() => {
-    const fetchCategoriesAndTagsAndAd = async () => {
-      const categories = await axios.get("http://localhost:3000/categories");
-      setCategories(categories.data);
-      const tags = await axios.get("http://localhost:3000/tags");
-      setTags(tags.data);
-      const ad = await axios.get(`http://localhost:3000/ads/${id}`);
-      setAd(ad.data);
-    };
-    fetchCategoriesAndTagsAndAd();
-  }, [id]);
+  const { data : adData, loading : adLoading, error : adError } = useGetAdQuery({
+    variables: { getAdId: Number(id)},
+  })
+  const { data : categoriesData, loading : categoriesLoading, error : categoriesError} = useGetAllCategoriesQuery()
+
+  const [createAd, {data : createAdData, loading : createAdLoading, error : createAdError}] = useCreateAdMutation()
 
   const { register, handleSubmit } = useForm<Inputs>();
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await axios.put(`http://localhost:3000/ads/${id}`, data);
-  };
-
-  if (ad === undefined) {
-    return <p>Loading</p>;
+  const onSubmit = async (formData: Inputs) => {
+    try {
+      await createAd({
+        variables: {
+          data: {
+            ...formData, 
+            price: Number(formData.price),
+            category: Number(formData.category), 
+            tags: formData.tags.map(Number),
+          }
+        }
+      })
+    } catch (error) {
+      console.error(error); 
+    }
   }
+
+
+  if (adLoading || categoriesLoading || createAdLoading) return <p>Loading</p>; 
+  if (adError || categoriesError || createAdError) return <><NoPageFound /></>
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>
         Titre
         <input
-          defaultValue={ad.title}
+          defaultValue={adData?.getAd.title}
           {...register("title", { required: true })}
         />
       </label>
@@ -57,7 +60,7 @@ const EditAdForm = () => {
       <label>
         Description
         <input
-          defaultValue={ad.description}
+          defaultValue={adData?.getAd.description}
           {...register("description", { required: true })}
         />
       </label>
@@ -67,7 +70,7 @@ const EditAdForm = () => {
       <label>
         Vendeur
         <input
-          defaultValue={ad.owner}
+          defaultValue={adData?.getAd.owner}
           {...register("owner", { required: true })}
         />
       </label>
@@ -77,7 +80,7 @@ const EditAdForm = () => {
       <label>
         Ville
         <input
-          defaultValue={ad.location}
+          defaultValue={adData?.getAd.location}
           {...register("location", { required: true })}
         />
       </label>
@@ -87,7 +90,7 @@ const EditAdForm = () => {
       <label>
         Image
         <input
-          defaultValue={ad.picture}
+          defaultValue={adData?.getAd.picture}
           {...register("picture", { required: true })}
         />
       </label>
@@ -98,7 +101,7 @@ const EditAdForm = () => {
         Prix
         <input
           type="number"
-          defaultValue={ad.price}
+          defaultValue={adData?.getAd.price}
           {...register("price", { required: true })}
         />
       </label>
@@ -108,10 +111,10 @@ const EditAdForm = () => {
       <label>
         Categorie
         <select
-          defaultValue={ad.category.id}
+          defaultValue={adData?.getAd.category.id}
           {...register("category", { required: true })}
         >
-          {categories.map((el) => (
+          {categoriesData?.getAllCategories.map((el) => (
             <option value={el.id} key={el.id}>
               {el.title}
             </option>
@@ -120,12 +123,12 @@ const EditAdForm = () => {
       </label>
 
       <br />
-      {tags.map((el) => (
+      {adData?.getAd.tags.map((el) => (
         <div key={el.id}>
           <label>
             {el.title}
             <input
-              defaultChecked={ad.tags.some((tag) => tag.id === el.id)}
+              defaultChecked={adData?.getAd.tags.some((tag) => tag.id === el.id)}
               value={el.id}
               type="checkbox"
               {...register("tags")}

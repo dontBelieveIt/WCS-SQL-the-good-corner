@@ -5,9 +5,10 @@ import "./index.css";
 import App from "./App.tsx";
 import { ToastContainer } from "react-toastify";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import endPoint from "../endPoint.tsx";
 
 const client = new ApolloClient({
-  uri: "http://localhost:3000",
+  uri: endPoint,
   cache: new InMemoryCache(),
 });
 

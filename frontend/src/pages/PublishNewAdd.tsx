@@ -6,7 +6,7 @@ import { adsTypes } from "../types/adsTypes";
 import { Link } from "react-router";
 import { Tags } from "../types/Tags";
 import { toast } from "react-toastify";
-import { endPoint } from "../endPoint";
+import endPoint from "../../endPoint";
 
 const PublishNewAdd = () => {
     // To show the different categories and fetch them from the BD

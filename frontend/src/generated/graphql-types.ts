@@ -56,21 +56,21 @@ export type CategoryInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addNewCategory: Scalars['ID']['output'];
   createAd: Scalars['ID']['output'];
-  createCategory: Scalars['ID']['output'];
   createTag: Scalars['ID']['output'];
   deleteAd: Scalars['ID']['output'];
   updateAd: Scalars['ID']['output'];
 };
 
 
-export type MutationCreateAdArgs = {
-  data: AdInput;
+export type MutationAddNewCategoryArgs = {
+  data: CategoryInput;
 };
 
 
-export type MutationCreateCategoryArgs = {
-  data: CategoryInput;
+export type MutationCreateAdArgs = {
+  data: AdInput;
 };
 
 
@@ -287,7 +287,7 @@ export type GetAdLazyQueryHookResult = ReturnType<typeof useGetAdLazyQuery>;
 export type GetAdSuspenseQueryHookResult = ReturnType<typeof useGetAdSuspenseQuery>;
 export type GetAdQueryResult = Apollo.QueryResult<GetAdQuery, GetAdQueryVariables>;
 export const DeleteAdDocument = gql`
-    mutation DeleteAd($deleteAdId: Float!) {
+    mutation deleteAd($deleteAdId: Float!) {
   deleteAd(id: $deleteAdId)
 }
     `;

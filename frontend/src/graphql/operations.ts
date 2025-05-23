@@ -43,7 +43,7 @@ export const GET_AD = gql`
 `;
 
 export const DELETE_AD = gql`
-  mutation DeleteAd($deleteAdId: Float!) {
+  mutation deleteAd($deleteAdId: Float!) {
     deleteAd(id: $deleteAdId)
   }
 `;
