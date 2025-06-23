@@ -1,7 +1,8 @@
-import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { AdDetails, Category, Tag } from "../types";
 import { useParams } from "react-router";
-import { useCreateAdMutation, useGetAdQuery, useGetAllCategoriesQuery } from "../generated/graphql-types";
-import NoPageFound from "./NoPageFound";
 
 type Inputs = {
   title: string;
@@ -16,41 +17,37 @@ type Inputs = {
 
 const EditAdForm = () => {
   const { id } = useParams();
-  const { data : adData, loading : adLoading, error : adError } = useGetAdQuery({
-    variables: { getAdId: Number(id)},
-  })
-  const { data : categoriesData, loading : categoriesLoading, error : categoriesError} = useGetAllCategoriesQuery()
-
-  const [createAd, {data : createAdData, loading : createAdLoading, error : createAdError}] = useCreateAdMutation()
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [ad, setAd] = useState<AdDetails>();
+  useEffect(() => {
+    const fetchCategoriesAndTagsAndAd = async () => {
+      const categories = await axios.get("http://localhost:3000/categories");
+      setCategories(categories.data);
+      const tags = await axios.get("http://localhost:3000/tags");
+      setTags(tags.data);
+      const ad = await axios.get(`http://localhost:3000/ads/${id}`);
+      setAd(ad.data);
+    };
+    fetchCategoriesAndTagsAndAd();
+  }, [id]);
 
   const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit = async (formData: Inputs) => {
-    try {
-      await createAd({
-        variables: {
-          data: {
-            ...formData, 
-            price: Number(formData.price),
-            category: Number(formData.category), 
-            tags: formData.tags.map(Number),
-          }
-        }
-      })
-    } catch (error) {
-      console.error(error); 
-    }
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await axios.put(`http://localhost:3000/ads/${id}`, data);
+  };
+
+  if (ad === undefined) {
+    return <p>Loading</p>;
   }
-
-
-  if (adLoading || categoriesLoading || createAdLoading) return <p>Loading</p>; 
-  if (adError || categoriesError || createAdError) return <><NoPageFound /></>
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>
         Titre
         <input
-          defaultValue={adData?.getAd.title}
+          defaultValue={ad.title}
           {...register("title", { required: true })}
         />
       </label>
@@ -60,7 +57,7 @@ const EditAdForm = () => {
       <label>
         Description
         <input
-          defaultValue={adData?.getAd.description}
+          defaultValue={ad.description}
           {...register("description", { required: true })}
         />
       </label>
@@ -70,7 +67,7 @@ const EditAdForm = () => {
       <label>
         Vendeur
         <input
-          defaultValue={adData?.getAd.owner}
+          defaultValue={ad.owner}
           {...register("owner", { required: true })}
         />
       </label>
@@ -80,7 +77,7 @@ const EditAdForm = () => {
       <label>
         Ville
         <input
-          defaultValue={adData?.getAd.location}
+          defaultValue={ad.location}
           {...register("location", { required: true })}
         />
       </label>
@@ -90,7 +87,7 @@ const EditAdForm = () => {
       <label>
         Image
         <input
-          defaultValue={adData?.getAd.picture}
+          defaultValue={ad.picture}
           {...register("picture", { required: true })}
         />
       </label>
@@ -101,7 +98,7 @@ const EditAdForm = () => {
         Prix
         <input
           type="number"
-          defaultValue={adData?.getAd.price}
+          defaultValue={ad.price}
           {...register("price", { required: true })}
         />
       </label>
@@ -111,10 +108,10 @@ const EditAdForm = () => {
       <label>
         Categorie
         <select
-          defaultValue={adData?.getAd.category.id}
+          defaultValue={ad.category.id}
           {...register("category", { required: true })}
         >
-          {categoriesData?.getAllCategories.map((el) => (
+          {categories.map((el) => (
             <option value={el.id} key={el.id}>
               {el.title}
             </option>
@@ -123,12 +120,12 @@ const EditAdForm = () => {
       </label>
 
       <br />
-      {adData?.getAd.tags.map((el) => (
+      {tags.map((el) => (
         <div key={el.id}>
           <label>
             {el.title}
             <input
-              defaultChecked={adData?.getAd.tags.some((tag) => tag.id === el.id)}
+              defaultChecked={ad.tags.some((tag) => tag.id === el.id)}
               value={el.id}
               type="checkbox"
               {...register("tags")}
