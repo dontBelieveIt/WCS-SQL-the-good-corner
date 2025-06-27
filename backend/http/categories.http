@@ -1,9 +1,87 @@
 GET http://localhost:3000/categories
 
+
+
 ###
+
 POST http://localhost:3000/categories
 Content-Type: application/json
 
 {
-    "title":"Immobilier"
+    "title": "real estate"
 }
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "vehicle"
+}
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "holidays"
+}
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "fashion"
+}
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "house & garden"
+}
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "family"
+}
+
+
+###
+
+POST http://localhost:3000/categories
+Content-Type: application/json
+
+{
+    "title": "electronic"
+}
+
+
+###
+
+PUT http://localhost:3000/categories/2
+Content-Type: application/json 
+
+{ 
+    "title" : "Cactus"
+}
+
+###
+
+DELETE http://localhost:3000/categories/24
+Content-Type: application/json

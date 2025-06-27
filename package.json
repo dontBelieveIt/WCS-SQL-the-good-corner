@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@graphql-codegen/cli": "^5.0.7"
+  }
+}
