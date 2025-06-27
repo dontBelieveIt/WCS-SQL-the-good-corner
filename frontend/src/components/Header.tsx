@@ -1,26 +1,20 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { Category } from "../types";
+import { useGetAllCategoriesQuery } from "../generated/graphql-types";
 
 const Header = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
   const navigate = useNavigate();
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const result = await axios.get("http://localhost:3000/categories");
-      setCategories(result.data);
-    };
-    fetchCategories();
-  }, []);
+  const { data, loading, error } = useGetAllCategoriesQuery();
+
+  if (loading) return <p>Wait for it...</p>;
+  if (error) return <p>Woops, on a tout cassé</p>;
   return (
     <header className="header">
       <div className="main-menu">
         <h1>
-          <a href="/" className="button logo link-button">
+          <Link to="/" className="button logo link-button">
             <span className="mobile-short-label">TGC</span>
             <span className="desktop-long-label">THE GOOD CORNER</span>
-          </a>
+          </Link>
         </h1>
         <form
           onSubmit={(e) => {
@@ -55,13 +49,13 @@ const Header = () => {
             </svg>
           </button>
         </form>
-        <a href="/ads/new" className="button link-button">
+        <Link to="/ads/new" className="button link-button">
           <span className="mobile-short-label">Publier</span>
           <span className="desktop-long-label">Publier une annonce</span>
-        </a>
+        </Link>
       </div>
       <nav className="categories-navigation">
-        {categories.map((el) => (
+        {data?.getAllCategories.map((el) => (
           <Link
             key={el.id}
             to={`/?category=${el.id}`}

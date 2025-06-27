@@ -1,37 +1,52 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Category, Tag } from "../types";
-
-type Inputs = {
-  title: string;
-  description: string;
-  owner: string;
-  price: number;
-  picture: string;
-  location: string;
-  category: number;
-  tags: string[];
-};
+import {
+  AdInput,
+  useCreateAdMutation,
+  useGetAllCategoriesAndTagsQuery,
+} from "../generated/graphql-types";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
+import { GET_ALL_ADS } from "../graphql/operations";
 
 const NewAdForm = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
-  useEffect(() => {
-    const fetchCategoriesAndTags = async () => {
-      const categories = await axios.get("http://localhost:3000/categories");
-      setCategories(categories.data);
-      const tags = await axios.get("http://localhost:3000/tags");
-      setTags(tags.data);
-    };
-    fetchCategoriesAndTags();
-  }, []);
+  const navigate = useNavigate();
 
-  const { register, handleSubmit } = useForm<Inputs>();
+  // bellow is a way to ask apollo to refetch somes queries
+  /*   const client = useApolloClient();
+  await client.refetchQueries({
+    include: [GET_ALL_ADS],
+  }); */
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await axios.post("http://localhost:3000/ads", data);
+  const { error, loading, data } = useGetAllCategoriesAndTagsQuery();
+
+  // useing the refetch queries here, if the mutation succeed, the GET_ALL_ADS will be re-executed
+  const [createAd] = useCreateAdMutation({
+    refetchQueries: [
+      {
+        query: GET_ALL_ADS,
+      },
+    ],
+  });
+  const { register, handleSubmit } = useForm<AdInput>();
+
+  const onSubmit: SubmitHandler<AdInput> = async (data) => {
+    try {
+      const sanitizedData = { ...data, price: Number(data.price) };
+
+      const { data: newAdData } = await createAd({
+        variables: { data: sanitizedData },
+      });
+      // bellow the version without the destructuration / alias
+      // const result = await createAd({ variables: { data: newData } });
+      // const newAdData = result.data;
+      navigate(`/ads/${newAdData?.createAd}`, { replace: true });
+    } catch {
+      toast.error("Une error !");
+    }
   };
+
+  if (loading) return <p>Wait for it...</p>;
+  if (error) return <p>Woops, on a tout cassé</p>;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -101,7 +116,7 @@ const NewAdForm = () => {
       <label>
         Categorie
         <select {...register("category", { required: true })}>
-          {categories.map((el) => (
+          {data?.getAllCategories.map((el) => (
             <option value={el.id} key={el.id}>
               {el.title}
             </option>
@@ -110,7 +125,7 @@ const NewAdForm = () => {
       </label>
 
       <br />
-      {tags.map((el) => (
+      {data?.getAllTags.map((el) => (
         <div key={el.id}>
           <label>
             {el.title}
